@@ -34,8 +34,8 @@ module "sns_guardduty_notificatoons"{
 }
 
 
-module "aws_guard_duty"{
-  source = "../../terraform-modules/aws/platform-services/guard_duty"
-  guarddutyevent_name = var.guardduty_event_name
-  notification_arn = module.sns_guardduty_notificatoons.sns_topic_arn
-}
+# module "aws_guard_duty"{
+#   source = "../../terraform-modules/aws/platform-services/guard_duty"
+#   guarddutyevent_name = var.guardduty_event_name
+#   notification_arn = module.sns_guardduty_notificatoons.sns_topic_arn
+# }
