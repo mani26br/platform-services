@@ -39,3 +39,8 @@ module "sns_guardduty_notificatoons"{
 #   guarddutyevent_name = var.guardduty_event_name
 #   notification_arn = module.sns_guardduty_notificatoons.sns_topic_arn
 # }
+
+module "cloudwatch_alarms" {
+  source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
+  metric_name = var.cloudwatch_alarm_name
+}
