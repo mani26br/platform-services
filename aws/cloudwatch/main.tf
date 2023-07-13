@@ -27,11 +27,11 @@
 
 # ###SNS_Notifications###
 
-module "sns_guardduty_notificatoons"{
-  source = "../../terraform-modules/aws/sns/sns_topics"
-  sns_topic_name = var.guardduty_sns_topic_name
-  sns_topic_display_name = var.guardduty_sns_topic_name
-}
+# module "sns_guardduty_notificatoons"{
+#   source = "../../terraform-modules/aws/sns/sns_topics"
+#   sns_topic_name = var.guardduty_sns_topic_name
+#   sns_topic_display_name = var.guardduty_sns_topic_name
+# }
 
 
 # module "aws_guard_duty"{
