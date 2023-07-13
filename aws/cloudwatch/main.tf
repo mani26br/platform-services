@@ -40,7 +40,11 @@
 #   notification_arn = module.sns_guardduty_notificatoons.sns_topic_arn
 # }
 
-module "cloudwatch_alarms" {
-  source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
-  metric_name = var.cloudwatch_alarm_name
+# module "cloudwatch_alarms" {
+#   source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
+#   metric_name = var.cloudwatch_alarm_name
+# }
+
+module "cloudwatch_log_metric_filter" {
+  source ="../../terraform-modules/aws/cloudwatch/metric-filter"
 }
