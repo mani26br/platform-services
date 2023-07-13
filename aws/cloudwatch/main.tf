@@ -47,4 +47,5 @@
 
 module "cloudwatch_log_metric_filter" {
   source ="../../terraform-modules/aws/cloudwatch/metric-filter"
+  name = var.metric_filter_name
 }
