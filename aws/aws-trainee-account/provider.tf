@@ -14,8 +14,8 @@
 
 # Terraform version 1.2.3
 terraform {
-  #required_version = "=1.2.4"
-  required_version = "=1.4.2"
+  required_version = "=1.2.4"
+  #required_version = "=1.4.2"
 }
 
 provider "aws" {
