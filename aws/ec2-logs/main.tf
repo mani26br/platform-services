@@ -40,11 +40,7 @@
 #   notification_arn = module.sns_guardduty_notificatoons.sns_topic_arn
 # }
 
-module "ec2" {
-  source = "../../terraform-modules/aws/ec2"
-}
-
-module "iam" {
-  source = "../../terraform-modules/aws/iam"
+module "iam_policy" {
+  source = "../../terraform-modules/aws/iam_policy_cloudwatch"
 }
 
