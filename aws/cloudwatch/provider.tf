@@ -21,4 +21,5 @@ provider "aws" {
   version = "~> 4.0"
   region  = var.AWS_REGION
   profile = "axle-trainee-personal"
+  # profile = "trainee"
 }
