@@ -20,5 +20,5 @@ terraform {
 provider "aws" {
   version = "~> 4.0"
   region  = var.AWS_REGION
-  profile = "me"
+  profile = "axle-trainee-personal"
 }
