@@ -48,3 +48,7 @@ module "cloudwatch_log_metric_filter" {
   source ="../../terraform-modules/aws/cloudwatch/metric-filter"
 }
 
+module "vpc_flowlog" {
+  source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
+}
+
