@@ -7,8 +7,22 @@
 			"files": {
 				"collect_list": [
 					{
-						"file_path": "/var/log/syslog",
+						"file_path": "/var/log/syslog", 
 						"log_group_name": "syslog",
+						"log_stream_name": "{instance_id}",
+						"retention_in_days": -1
+					},
+
+                    {
+						"file_path": "/var/log/kern.log", 
+						"log_group_name": "kernellog",
+						"log_stream_name": "{instance_id}",
+						"retention_in_days": -1
+					},
+
+                    {
+						"file_path": "/var/log/auth.log", 
+						"log_group_name": "Securitylog",
 						"log_stream_name": "{instance_id}",
 						"retention_in_days": -1
 					}
