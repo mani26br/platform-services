@@ -42,6 +42,7 @@
 
 module "cloudwatch_alarms" {
   source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
+  alarm_actions = var.alarm_actions
 }
 
 module "cloudwatch_log_metric_filter" {

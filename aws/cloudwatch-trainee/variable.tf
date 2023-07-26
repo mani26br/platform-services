@@ -7,7 +7,10 @@ variable "log_group_name" {
     type = string
 }
 
-
+variable "alarm_actions" {
+    description = "The name of the log group to associate the metric filter with."
+    type = list(string)
+}
 
 
 
