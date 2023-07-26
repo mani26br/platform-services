@@ -1,9 +1,11 @@
 variable "AWS_REGION" {
   type = string
-  default = "us-east-1"
 }
 
-
+variable "log_group_name" {
+    description = "The name of the log group to associate the metric filter with."
+    type = string
+}
 
 
 
