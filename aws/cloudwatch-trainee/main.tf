@@ -49,7 +49,7 @@ module "cloudwatch_log_metric_filter" {
   log_group_name = var.log_group_name
 }
 
-module "vpc_flowlog" {
-  source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
-}
+# module "vpc_flowlog" {
+#   source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
+# }
 
