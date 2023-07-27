@@ -6,10 +6,10 @@ module "sns_topic" {
 
 module "sns_topic_subscription"{
   source = "../../terraform-modules/aws/sns/sns_topic_subscription"
-  #sns_topic_subscription_topic_arn = "arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.sns_topic_name}"
-  #sns_topic_subscription_endpoint = "arn:aws:sqs:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.sns_topic_name}"
-  sns_topic_subscription_topic_arn = var.sns_topic_subscription_topic_arn
-  sns_topic_subscription_endpoint = var.sns_topic_subscription_endpoint
+  sns_topic_subscription_topic_arn = "arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.sns_topic_name}"
+  sns_topic_subscription_endpoint = "arn:aws:sqs:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.sns_topic_name}"
+  # sns_topic_subscription_topic_arn = var.sns_topic_subscription_topic_arn
+  # sns_topic_subscription_endpoint = var.sns_topic_subscription_endpoint
 }
 
 module "sqs_queue" {
