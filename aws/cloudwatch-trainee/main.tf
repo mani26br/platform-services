@@ -1,70 +1,19 @@
-
-# ###MFA###
-# module "iam-enforce-mfa-group-policy" {
-#   source = "../../terraform-modules/aws/platform-services/mfa_iam_policy/"
-# }
-# resource "aws_iam_group" "platform-service-default-group" {
-#   name = var.platform_service_default_group_name
-# }
-# resource "aws_iam_group_policy_attachment" "enforce-mfa-group-policy-attachment" {
-#   group      = aws_iam_group.platform-service-default-group.name
-#   policy_arn = module.iam-enforce-mfa-group-policy.iam_policy_arn
-# }
-# ###configrules###
-# module "aws_configrecorder"{
-#   source = "../../terraform-modules/aws/platform-services/configrecorder/"
-# }
-# module "aws-NIST-800-53-configrules" {
-#   source = "../../terraform-modules/aws/platform-services/configrules/"
-# }
-# ###passwd_policy###
-# module "passwd_policy"{
-#   source = "../../terraform-modules/aws/platform-services/passwd_policy/"
-# }
-
-
-# ###Guard_Duty###
-
-# ###SNS_Notifications###
-
-# module "sns_guardduty_notificatoons"{
-#   source = "../../terraform-modules/aws/sns/sns_topics"
-#   sns_topic_name = var.guardduty_sns_topic_name
-#   sns_topic_display_name = var.guardduty_sns_topic_name
-# }
-
-
-# module "aws_guard_duty"{
-#   source = "../../terraform-modules/aws/platform-services/guard_duty"
-#   guarddutyevent_name = var.guardduty_event_name
-#   notification_arn = module.sns_guardduty_notificatoons.sns_topic_arn
-# }
-
-# module "cloudwatch_alarms" {
-#   source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
-#   alarm_actions = var.alarm_actions
-# }
-
-# module "cloudwatch_log_metric_filter" {
-#   source ="../../terraform-modules/aws/cloudwatch/metric-filter"
-#   log_group_name = var.log_group_name
-# }
-
-# module "vpc_flowlog" {
-#   source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
-# }
-
 module "sns_topic" {
   source = "../../terraform-modules/aws/sns/sns_topics"
   sns_topic_name = var.sns_topic_name
+  sns_topic_policy = data.aws_iam_policy_document.sns_access_policy.json
 }
 
 module "sns_topic_subscription"{
   source = "../../terraform-modules/aws/sns/sns_topic_subscription"
+  #sns_topic_subscription_topic_arn = "arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.sns_topic_name}"
+  #sns_topic_subscription_endpoint = "arn:aws:sqs:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.sns_topic_name}"
   sns_topic_subscription_topic_arn = var.sns_topic_subscription_topic_arn
   sns_topic_subscription_endpoint = var.sns_topic_subscription_endpoint
 }
 
 module "sqs_queue" {
   source = "../../terraform-modules/aws/sqs"
+  queue_name = var.queue_name
+  sqs_access_policy = data.aws_iam_policy_document.sqs_access_policy.json
 }

@@ -23,3 +23,7 @@ variable "sns_topic_subscription_topic_arn" {
 variable "sns_topic_subscription_endpoint" {
   type    = string
 }
+
+variable "queue_name" {
+  type = string
+}
