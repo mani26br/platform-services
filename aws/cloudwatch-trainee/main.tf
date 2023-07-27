@@ -40,17 +40,24 @@
 #   notification_arn = module.sns_guardduty_notificatoons.sns_topic_arn
 # }
 
-module "cloudwatch_alarms" {
-  source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
-  alarm_actions = var.alarm_actions
-}
+# module "cloudwatch_alarms" {
+#   source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
+#   alarm_actions = var.alarm_actions
+# }
 
-module "cloudwatch_log_metric_filter" {
-  source ="../../terraform-modules/aws/cloudwatch/metric-filter"
-  log_group_name = var.log_group_name
-}
+# module "cloudwatch_log_metric_filter" {
+#   source ="../../terraform-modules/aws/cloudwatch/metric-filter"
+#   log_group_name = var.log_group_name
+# }
 
 # module "vpc_flowlog" {
 #   source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
 # }
 
+module "sns_topic" {
+  source ="../../terraform-modules/aws/sns/sns_topics"
+}
+
+#  module "sqs_queue" {
+#   source ="../../terraform-modules/aws/sqs"
+# }

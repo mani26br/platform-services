@@ -12,5 +12,7 @@ variable "alarm_actions" {
     type = list(string)
 }
 
-
+variable "sns_topic_name" {
+  type    = string
+}
 
