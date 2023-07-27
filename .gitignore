@@ -2,3 +2,6 @@
 .terraform*
 *.tfstate
 *.tfstate.backup
+*.tfstate.lock.info
+.terraform/
+rds.auto.tfvars

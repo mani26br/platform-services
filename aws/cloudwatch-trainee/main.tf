@@ -55,9 +55,16 @@
 # }
 
 module "sns_topic" {
-  source ="../../terraform-modules/aws/sns/sns_topics"
+  source = "../../terraform-modules/aws/sns/sns_topics"
+  sns_topic_name = var.sns_topic_name
 }
 
-#  module "sqs_queue" {
-#   source ="../../terraform-modules/aws/sqs"
-# }
+module "sns_topic_subscription"{
+  source = "../../terraform-modules/aws/sns/sns_topic_subscription"
+  sns_topic_subscription_topic_arn = var.sns_topic_subscription_topic_arn
+  sns_topic_subscription_endpoint = var.sns_topic_subscription_endpoint
+}
+
+module "sqs_queue" {
+  source = "../../terraform-modules/aws/sqs"
+}

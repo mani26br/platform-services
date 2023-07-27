@@ -16,3 +16,10 @@ variable "sns_topic_name" {
   type    = string
 }
 
+variable "sns_topic_subscription_topic_arn" {
+  type    = string
+}
+
+variable "sns_topic_subscription_endpoint" {
+  type    = string
+}
