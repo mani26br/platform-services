@@ -1,3 +1,18 @@
+module "cloudwatch_alarms" {
+  source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
+  alarm_actions = [module.sns_topic.sns_topic_arn]
+}
+
+module "cloudwatch_log_metric_filter" {
+  source ="../../terraform-modules/aws/cloudwatch/metric-filter"
+  log_group_name = var.log_group_name
+}
+
+module "vpc_flowlog" {
+  source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
+  vpc_id = var.vpc_id
+}
+
 module "sns_topic" {
   source = "../../terraform-modules/aws/sns/sns_topics"
   sns_topic_name = var.sns_topic_name

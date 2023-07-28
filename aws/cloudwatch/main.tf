@@ -52,5 +52,6 @@ module "cloudwatch_log_metric_filter" {
 
 module "vpc_flowlog" {
   source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
+  vpc_id = var.vpc_id
 }
 
