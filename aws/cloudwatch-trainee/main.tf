@@ -16,7 +16,7 @@ module "cloudwatch_log_group" {
 
 module "vpc_flowlog" {
   source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
-  vpc_id = var.vpc_id
+  vpc_id = data.aws_vpc.current.id
 }
 
 module "sns_topic" {

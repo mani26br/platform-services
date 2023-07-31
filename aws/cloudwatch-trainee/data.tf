@@ -1,5 +1,11 @@
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
+data "aws_vpc" "current" {
+  tags = {
+    Department = "DevSecOps Associate"
+    Name = "DevSecOps-vpc"
+  }
+}
 
 data "aws_iam_policy_document" "sqs_access_policy" {
   version = "2012-10-17"

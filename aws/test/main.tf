@@ -1,5 +1,15 @@
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
+data "aws_vpc" "current" {
+  tags = {
+    Department = "DevSecOps Associate"
+    Name = "DevSecOps-vpc"
+  }
+}
+
+output "test" {
+  value = data.aws_vpc.current.id
+}
 
 output "id"{
   value = data.aws_caller_identity.current.arn
