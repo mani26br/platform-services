@@ -5,7 +5,12 @@ module "cloudwatch_alarms" {
 
 module "cloudwatch_log_metric_filter" {
   source ="../../terraform-modules/aws/cloudwatch/metric-filter"
-  log_group_name = var.log_group_name
+  log_group_name = module.cloudwatch_log_group.cloudwatch_log_group_name
+  #log_group_name = var.log_group_name
+}
+
+module "cloudwatch_log_group" {
+  source = "../../terraform-modules/aws/cloudwatch/log-group"
 }
 
 module "vpc_flowlog" {
@@ -31,3 +36,4 @@ module "sns_topic_subscription"{
   sns_topic_subscription_protocol = "sqs"
   sns_topic_subscription_endpoint = module.sqs_queue.base_queue_arn
 }
+
