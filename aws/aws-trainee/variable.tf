@@ -2,11 +2,11 @@ variable "AWS_REGION" {
   type = string
 }
 
-variable "sns_topic_name" {
+variable "cloudwatchalerts_sns_topic_name" {
   type    = string
 }
 
-variable "queue_name" {
+variable "cloudwatchalerts_sqs_name" {
   type = string
 }
 

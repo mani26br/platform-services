@@ -6,7 +6,8 @@ data "aws_vpc" "current" {
   }
 }
 
-data "aws_iam_policy_document" "sqs_access_policy" {
+
+data "aws_iam_policy_document" "cwa_sqs_queue_policy" {
   version = "2012-10-17"
   statement {
     sid = "First"
@@ -20,18 +21,18 @@ data "aws_iam_policy_document" "sqs_access_policy" {
       "sqs:SendMessage",
     ]
 
-    resources = ["arn:aws:sqs:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.queue_name}"]
+    resources = ["arn:aws:sqs:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.cloudwatchalerts_sqs_name}"]
     condition {
       test = "ArnEquals"
       variable = "aws:SourceArn"
 
-      values = ["arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.sns_topic_name}",
+      values = ["arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.cloudwatchalerts_sns_topic_name}",
       ]
     }
   }
 }
 
-data "aws_iam_policy_document" "sns_access_policy" {
+data "aws_iam_policy_document" "cwa_sns_topic_policy" {
   version = "2008-10-17"
   policy_id = "__default_policy_ID"
   statement {
@@ -53,7 +54,7 @@ data "aws_iam_policy_document" "sns_access_policy" {
         "SNS:Publish"
     ]
 
-    resources = ["arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.sns_topic_name}"]
+    resources = ["arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.cloudwatchalerts_sns_topic_name}"]
 
     condition {
       test = "StringEquals"
@@ -71,7 +72,7 @@ data "aws_iam_policy_document" "sns_access_policy" {
       identifiers = ["events.amazonaws.com"]
     }
     actions = ["sns:Publish"]
-    resources = ["arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.sns_topic_name}"]
+    resources = ["arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.cloudwatchalerts_sns_topic_name}"]
   }
 
 

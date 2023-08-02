@@ -6,8 +6,8 @@ common_tags = {
 }
 
 ###CloudWatch alerts###
-sns_topic_name = "aws-trainee"
-queue_name = "aws-trainee"
+cloudwatchalerts_sns_topic_name = "aws-trainee-cloudwatchalerts-notifcations"
+cloudwatchalerts_sqs_name = "aws-trainee-cloudwatchalerts-queue"
 
 ###vpc flow logs###
 vpc_name = "DevSecOps-vpc"
