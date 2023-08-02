@@ -7,7 +7,6 @@ module "cloudwatch_log_metric_filter" {
   source ="../../terraform-modules/aws/cloudwatch/metric-filter"
   log_group_name = module.cloudwatch_log_group.cloudwatch_log_group_name
   VPCFlowLogs_log_group_name = module.vpc_flowlog.vpc_flowloggroup_name
-  #log_group_name = var.log_group_name
 }
 
 module "cloudwatch_log_group" {
