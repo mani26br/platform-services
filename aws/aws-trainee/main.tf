@@ -46,6 +46,8 @@ module "vpc_flowlog" {
   vpc_flow_log_tags = var.common_tags
 }
 
+###Security Groups###
+
 module "SecurityGroup" {
   source = "../../terraform-modules/aws/securitygroup"
   assign_vpc_id = data.aws_vpc.current.id
