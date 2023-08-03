@@ -11,10 +11,11 @@ variable "cloudwatchalerts_sqs_name" {
 }
 
 variable "vpc_name" {
-  type = string
+  type = list(string)
 }
 
 variable "common_tags" {
   type    = map(any)
   default = {}
 }
+

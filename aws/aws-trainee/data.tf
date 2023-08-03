@@ -2,7 +2,13 @@ data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 data "aws_vpc" "current" {
   tags = {
-    Name = var.vpc_name 
+    Name = var.vpc_name[0] 
+  }
+}
+data "aws_vpcs" "current" {}
+locals {
+  vpc_ids_map = {
+    for idx, vpc_id in data.aws_vpcs.current.ids : var.vpc_name[idx] => vpc_id
   }
 }
 
@@ -77,3 +83,4 @@ data "aws_iam_policy_document" "cwa_sns_topic_policy" {
 
 
 }
+

@@ -9,7 +9,8 @@ module "cloudwatch_alarms" {
 module "cloudwatch_log_metric_filter" {
   source ="../../terraform-modules/aws/cloudwatch/metric-filter"
   log_group_name = module.cloudwatch_log_group.cloudwatch_log_group_name
-  VPCFlowLogs_log_group_name = module.vpc_flowlog.vpc_flowloggroup_name
+  #VPCFlowLogs_log_group_name = module.vpc_flowlog.vpc_flowloggroup_name
+  VPCFlowLogs_log_group_name = "eks-vpc-flow-logs"
 }
 
 module "sns_cloudwatchalerts_notifications" {
@@ -38,10 +39,21 @@ module "cloudwatch_log_group" {
   source = "../../terraform-modules/aws/cloudwatch/log-group"
 }
 
+# module "vpc_flowlog" {
+#   source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
+#   for_each = local.vpc_ids_map
+#   vpc_id = "${each.value}"
+#   vpc_name = "${each.key}"
+#   environment = var.common_tags["environment"]
+#   cloudwatch_log_tags = var.common_tags
+#   vpc_flow_log_tags = var.common_tags
+# }
+
 module "vpc_flowlog" {
   source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
   vpc_id = data.aws_vpc.current.id
-  vpc_name = var.vpc_name
+  vpc_name = var.vpc_name[0]
+  environment = var.common_tags["environment"]
   cloudwatch_log_tags = var.common_tags
   vpc_flow_log_tags = var.common_tags
 }
@@ -54,4 +66,7 @@ module "SecurityGroup" {
   sg_tags = var.common_tags
 }
 
+###programmatic access###
+
+# module "Iam"
 
