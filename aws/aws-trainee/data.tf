@@ -6,11 +6,11 @@ data "aws_vpc" "current" {
   }
 }
 data "aws_vpcs" "current" {}
-locals {
-  vpc_ids_map = {
-    for idx, vpc_id in data.aws_vpcs.current.ids : var.vpc_name[idx] => vpc_id
-  }
-}
+# locals {
+#   vpc_ids_map = {
+#     for idx, vpc_id in data.aws_vpcs.current.ids : var.vpc_name[idx] => vpc_id
+#   }
+# }
 
 
 data "aws_iam_policy_document" "cwa_sqs_queue_policy" {
