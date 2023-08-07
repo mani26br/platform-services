@@ -9,5 +9,5 @@ module "vpc_flowlog" {
 }
 
  module "flowlogrole" {
-  source = "../../terraform-modules/aws/iam_policy"
+  source = "../../terraform-modules/aws/platform-services/iam_roles"
 }
