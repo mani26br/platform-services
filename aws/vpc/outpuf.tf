@@ -1,7 +1,3 @@
-output "test" {
-    value = data.aws_vpcs.current
-}
-
 locals {
   vpc_flowlog_instances = {
     for vpc_id in data.aws_vpcs.current.ids :
