@@ -5,9 +5,9 @@ locals {
   }
 }
 
-# output "vpc_flowlog_instances" {
-#   value = local.vpc_flowlog_instances
-# }
+output "vpc_flowlog_instances" {
+  value = local.vpc_flowlog_instances
+}
 
 # output "vpc_flow" {
 #   value = local.vpc_flowlog_instances["vpc-09e3a6b6a5f9f30ad"].vpc_flowloggroup_name
