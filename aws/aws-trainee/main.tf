@@ -6,15 +6,19 @@
 #   tags = var.common_tags
 # }
 
-# module "cloudwatch_log_metric_filter" {
-#   source ="../../terraform-modules/aws/cloudwatch/metric-filter"
-#   #for_each = {local.CloudWatchMetrics}
-#   log_group_name = module.cloudwatch_log_group.cloudwatch_log_group_name
-#   #VPCFlowLogs_log_group_name = module.vpc_flowlog.vpc_flowloggroup_name
-#   #name = "${each.key}"
-#   #pattern = "${each.value}"
-#   VPCFlowLogs_log_group_name = "eks-vpc-flow-logs"
-# }
+module "cloudwatch_log_metric_filter" {
+  source ="../../terraform-modules/aws/cloudwatch/metric-filter"
+  for_each = local.CloudWatchMetrics
+  #log_group_name = module.cloudwatch_log_group.cloudwatch_log_group_name
+  #log_group_name = module.vpc_flowlog.vpc_flowloggroup_name
+  #log_group_name = "eks-vpc-flow-logs"
+  log_group_name = "axleinfo-int-cloudtrail-logs-853931821519-a7aa581f"
+  name = "${each.key}"
+  metric_transformation_name = "${each.key}"
+  pattern = "${each.value}"
+  metric_transformation_namespace = var.metric_namespace
+
+}
 
 module "sns_cloudwatchalerts_notifications" {
   source = "../../terraform-modules/aws/sns/sns_topics"

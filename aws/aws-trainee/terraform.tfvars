@@ -6,6 +6,7 @@ common_tags = {
 }
 
 ###CloudWatch alerts###
+metric_namespace = "CloudWatchAlarms"
 cloudwatchalerts_sns_topic_name = "aws-trainee-cloudwatchalerts-notifcations"
 cloudwatchalerts_sqs_name = "aws-trainee-cloudwatchalerts-queue"
 
