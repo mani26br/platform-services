@@ -15,3 +15,30 @@ cloudwatchalerts_sqs_name = "aws-trainee-cloudwatchalerts-queue"
 flowlogrole_name = "aws-trainee-vpc-flow-log-role"
 flowlogrole_policy_name = "aws-trainee-vpc-flow-log-policy"
 
+###Security Groups###
+sg_name = "NIH-SG"
+sg_description = "Security groups for ABAC within NIH CIDR block"
+sg_ingress = {
+      SG = {
+      from_port = 80
+      to_port = 80
+      protocol = "tcp"
+      cidr_blocks = ["15.0.0.0/24", "10.0.0.0/24"]
+    }
+
+    SG2 = {
+      from_port = 443
+      to_port = 443
+      protocol = "tcp"
+      cidr_blocks = ["15.0.0.0/24"]
+    }
+}
+
+sg_egress = {
+    SG = {
+      from_port = 0
+      to_port = 0
+      protocol = "tcp"
+      cidr_blocks = ["15.0.0.0/24"]
+    }
+  }

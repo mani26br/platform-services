@@ -64,30 +64,36 @@
 
 ###VPC_flow_log###
 
-module "flowlogrole" {
-  source = "../../terraform-modules/aws/iam/iam_role"
-  iam_role_name = var.flowlogrole_name
-  iam_role_assume_role_policy = data.aws_iam_policy_document.vpc_flow_assume_role_policy.json
-  iam_role_policy_name = var.flowlogrole_policy_name
-  iam_role_policy = data.aws_iam_policy_document.flow_log_role_policy.json
-}
+# module "flowlogrole" {
+#   source = "../../terraform-modules/aws/iam/iam_role"
+#   iam_role_name = var.flowlogrole_name
+#   iam_role_assume_role_policy = data.aws_iam_policy_document.vpc_flow_assume_role_policy.json
+#   iam_role_policy_name = var.flowlogrole_policy_name
+#   iam_role_policy = data.aws_iam_policy_document.flow_log_role_policy.json
+# }
 
-module "vpc_flowlog" {
-  source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
-  for_each = toset(data.aws_vpcs.current.ids)
-  vpc_id = "${each.key}"
-  flow_log_role_arn = module.flowlogrole.iam_role_arn
-  environment = var.common_tags["environment"]
-  cloudwatch_log_tags = var.common_tags
-  vpc_flow_log_tags = var.common_tags
-}
+# module "vpc_flowlog" {
+#   source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
+#   for_each = toset(data.aws_vpcs.current.ids)
+#   vpc_id = "${each.key}"
+#   flow_log_role_arn = module.flowlogrole.iam_role_arn
+#   environment = var.common_tags["environment"]
+#   cloudwatch_log_tags = var.common_tags
+#   vpc_flow_log_tags = var.common_tags
+# }
 
 ###Security Groups###
 
-# module "SecurityGroup" {
-#   source = "../../terraform-modules/aws/securitygroup"
-#   assign_vpc_id = data.aws_vpc.current.id
-#   sg_tags = var.common_tags
-# }
+module "SecurityGroup" {
+  source = "../../terraform-modules/aws/securitygroup"
+  for_each = toset(data.aws_vpcs.current.ids)
+  sg_name = var.sg_name
+  sg_description = var.sg_description
+  sg_ingress = var.sg_ingress
+  sg_egress = var.sg_egress
+  assign_vpc_id = "${each.key}"
+  #assign_vpc_id = data.aws_vpcs.current.ids[0]
+  sg_tags = var.common_tags
+}
 
 

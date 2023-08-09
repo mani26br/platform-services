@@ -62,3 +62,21 @@ variable "flowlogrole_policy_name" {
   type    = string
   default = ""
 }
+
+##Security_Group###
+
+variable "sg_name" {
+  type = string
+}
+
+variable "sg_description" {
+  type = string
+}
+
+variable "sg_ingress" {
+  type = any
+}
+
+variable "sg_egress" {
+  type = any
+}
