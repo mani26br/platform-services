@@ -19,3 +19,13 @@ variable "common_tags" {
   default = {}
 }
 
+locals {
+  CloudWatchMetrics = {
+    "VPCFlowLogs" = "[version, account_id, interface_id, src_ip, dest_ip, src_port, dest_port=22, protocol, pkt_count, byte_count, start_time, end_time, action=\"ACCEPT\",status]", 
+    "RootAccountUsage" = "{$.userIdentity.type=\"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType !=\"AwsServiceEvent\"}"
+  }
+}
+
+output "metrics" {
+  value = local.CloudWatchMetrics
+}
