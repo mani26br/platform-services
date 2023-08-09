@@ -1,10 +1,5 @@
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
-data "aws_vpc" "current" {
-  tags = {
-    Name = var.vpc_name[0] 
-  }
-}
 data "aws_vpcs" "current" {}
 # locals {
 #   vpc_ids_map = {
