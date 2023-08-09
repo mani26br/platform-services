@@ -26,8 +26,13 @@ variable "cloudwatchalerts_sqs_name" {
 }
 
 locals {
+  VPCFlowLogsMetrics = {
+    "VPCFlowLogs" = "[version, account_id, interface_id, src_ip, dest_ip, src_port, dest_port=22, protocol, pkt_count, byte_count, start_time, end_time, action=\"ACCEPT\",status]" 
+  }
+}
+
+locals {
   CloudTrailMetrics = {
-    #"VPCFlowLogs" = "[version, account_id, interface_id, src_ip, dest_ip, src_port, dest_port=22, protocol, pkt_count, byte_count, start_time, end_time, action=\"ACCEPT\",status]", 
     "CloudTrailChange" = "{($.eventName=CreateTrail) || ($.eventName=UpdateTrail) || ($.eventName=DeleteTrail) || ($.eventName=StartLogging) || ($.eventName=StopLogging)}"
     "IamCreateAccessKey" = "{($.eventName=CreateAccessKey)}"
     "IamDeleteAccessKey" = "{($.eventName=DeleteAccessKey)}"
