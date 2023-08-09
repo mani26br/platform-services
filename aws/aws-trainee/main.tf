@@ -17,7 +17,6 @@ module "cloudwatch_log_metric_filter" {
   metric_transformation_name = "${each.key}"
   pattern = "${each.value}"
   metric_transformation_namespace = var.metric_namespace
-
 }
 
 module "sns_cloudwatchalerts_notifications" {
