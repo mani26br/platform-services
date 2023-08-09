@@ -2,6 +2,13 @@ variable "AWS_REGION" {
   type = string
 }
 
+variable "common_tags" {
+  type    = map(any)
+  default = {}
+}
+
+###CloudWatchAlarms##
+
 variable "cloudwatchalerts_sns_topic_name" {
   type    = string
 }
@@ -10,14 +17,19 @@ variable "cloudwatchalerts_sqs_name" {
   type = string
 }
 
-variable "vpc_name" {
-  type = list(string)
+###VPC_flow_logs####
+
+variable "flowlogrole_name" {
+  type    = string
+  default = ""
 }
 
-variable "common_tags" {
-  type    = map(any)
-  default = {}
+variable "flowlogrole_policy_name" {
+  type    = string
+  default = ""
 }
+
+
 
 locals {
   CloudWatchMetrics = {

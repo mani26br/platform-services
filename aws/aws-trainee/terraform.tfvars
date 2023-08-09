@@ -10,4 +10,5 @@ cloudwatchalerts_sns_topic_name = "aws-trainee-cloudwatchalerts-notifcations"
 cloudwatchalerts_sqs_name = "aws-trainee-cloudwatchalerts-queue"
 
 ###vpc flow logs###
-vpc_name = ["DevSecOps-vpc", "eks-vpc","nex-ue1-dev-vpc","test-vpc","jenkins-vpc"]
+flowlogrole_name = "aws-logs-archive-vpc-flow-log-role"
+flowlogrole_policy_name = "aws-logs-archive-vpc-flow-log-policy"

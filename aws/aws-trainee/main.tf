@@ -42,19 +42,23 @@ module "cwa_sns_topic_subscription"{
 #   source = "../../terraform-modules/aws/cloudwatch/log-group"
 # }
 
-# module "vpc_flowlog" {
-#   source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
-#   for_each = toset(data.aws_vpcs.current.ids)
-#   vpc_id = "${each.key}"
-#   flow_log_role_arn = module.flowlogrole.flow_log_role_arn
-#   environment = var.common_tags["environment"]
-#   cloudwatch_log_tags = var.common_tags
-#   vpc_flow_log_tags = var.common_tags
-# }
+module "flowlogrole" {
+  source = "../../terraform-modules/aws/iam/iam_role"
+  iam_role_name = var.flowlogrole_name
+  iam_role_assume_role_policy = data.aws_iam_policy_document.vpc_flow_assume_role_policy.json
+  iam_role_policy_name = var.flowlogrole_policy_name
+  iam_role_policy = data.aws_iam_policy_document.flow_log_role_policy.json
+}
 
-#  module "flowlogrole" {
-#   source = "../../terraform-modules/aws/iam_roles/flow_log_role"
-# }
+module "vpc_flowlog" {
+  source = "../../terraform-modules/aws/platform-services/vpc_flowlog"
+  for_each = toset(data.aws_vpcs.current.ids)
+  vpc_id = "${each.key}"
+  flow_log_role_arn = module.flowlogrole.iam_role_arn
+  environment = var.common_tags["environment"]
+  cloudwatch_log_tags = var.common_tags
+  vpc_flow_log_tags = var.common_tags
+}
 
 # module "vpc_flowlog" {
 #   source = "../../terraform-modules/aws/platform-services/vpc_flowlog"

@@ -1,6 +1,6 @@
-output "test" {
-    value = data.aws_vpcs.current
-}
+# output "test" {
+#     value = data.aws_vpcs.current
+# }
 
 # locals {
 #   vpc_flowlog_instances = {
