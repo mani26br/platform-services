@@ -13,12 +13,20 @@ variable "metric_namespace" {
   type = string
 }
 
+variable "cloudtrail_loggroup_name" {
+  type = string
+}
+
 variable "cloudwatchalerts_sns_topic_name" {
   type    = string
 }
 
 variable "cloudwatchalerts_sqs_name" {
   type = string
+}
+
+variable "cloudtrailalerts_name" {
+  type = list(string)
 }
 
 locals {

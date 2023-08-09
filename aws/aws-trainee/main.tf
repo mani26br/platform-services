@@ -1,18 +1,19 @@
 ###CloudWatchAlerts###
 
-# module "cloudwatch_alarms" {
-#   source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
-#   alarm_actions = [module.sns_cloudwatchalerts_notifications.sns_topic_arn]
-#   tags = var.common_tags
-# }
+module "cloudwatch_alarms" {
+  source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
+  for_each = local.CloudWatchMetrics
+  alarm_name = "${each.key}"
+  metric_name = "${each.key}"
+  namespace = var.metric_namespace
+  alarm_actions = [module.sns_cloudwatchalerts_notifications.sns_topic_arn]
+  tags = var.common_tags
+}
 
 module "cloudwatch_log_metric_filter" {
   source ="../../terraform-modules/aws/cloudwatch/metric-filter"
   for_each = local.CloudWatchMetrics
-  #log_group_name = module.cloudwatch_log_group.cloudwatch_log_group_name
-  #log_group_name = module.vpc_flowlog.vpc_flowloggroup_name
-  #log_group_name = "eks-vpc-flow-logs"
-  log_group_name = "axleinfo-int-cloudtrail-logs-853931821519-a7aa581f"
+  log_group_name = var.cloudtrail_loggroup_name
   name = "${each.key}"
   metric_transformation_name = "${each.key}"
   pattern = "${each.value}"
@@ -63,6 +64,11 @@ module "cwa_sns_topic_subscription"{
 #   environment = var.common_tags["environment"]
 #   cloudwatch_log_tags = var.common_tags
 #   vpc_flow_log_tags = var.common_tags
+# }
+
+# output "test" {
+#   value = module.vpc_flowlog[data.aws_vpcs.current.ids[0]].vpc_flowloggroup_name
+#   #value = data.aws_vpcs.current
 # }
 
 ###Security Groups###
