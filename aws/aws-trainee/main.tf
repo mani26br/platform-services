@@ -84,16 +84,18 @@
 
 ###Security Groups###
 
-module "SecurityGroup" {
-  source = "../../terraform-modules/aws/securitygroup"
-  for_each = toset(data.aws_vpcs.current.ids)
-  sg_name = var.sg_name
-  sg_description = var.sg_description
-  sg_ingress = var.sg_ingress
-  sg_egress = var.sg_egress
-  assign_vpc_id = "${each.key}"
-  #assign_vpc_id = data.aws_vpcs.current.ids[0]
-  sg_tags = var.common_tags
+# module "SecurityGroup" {
+#   source = "../../terraform-modules/aws/securitygroup"
+#   for_each = toset(data.aws_vpcs.current.ids)
+#   sg_name = var.sg_name
+#   sg_description = var.sg_description
+#   sg_ingress = var.sg_ingress
+#   sg_egress = var.sg_egress
+#   assign_vpc_id = "${each.key}"
+#   #assign_vpc_id = data.aws_vpcs.current.ids[0]
+#   sg_tags = var.common_tags
+# }
+
+module "Systems_Manager" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm"
 }
-
-
