@@ -50,6 +50,8 @@ configure_cw_agent_parameters = {
 	optionalRestart = "yes"
 }
 
+ssm_parameter_store_name = "/cw-agent/config"
+
 ###Security Groups###
 sg_name = "NIH-SG"
 sg_description = "Security groups for ABAC within NIH CIDR block"

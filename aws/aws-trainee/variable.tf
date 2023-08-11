@@ -69,6 +69,10 @@ variable "cw_agent_config" {
   type = string
 }
 
+variable "ssm_parameter_store_name" {
+  type = string
+}
+
 variable "install_cw_agent_parameters" {
   type = map(string)
 }
