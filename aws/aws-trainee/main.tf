@@ -96,6 +96,6 @@
 #   sg_tags = var.common_tags
 # }
 
-module "Systems_Manager" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm"
-}
+# module "Systems_Manager" {
+#   source = "../../terraform-modules/aws/platform-services/aws_ssm"
+# }
