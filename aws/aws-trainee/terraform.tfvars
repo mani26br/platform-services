@@ -49,7 +49,6 @@ configure_cw_agent_parameters = {
 	optionalConfigurationLocation = "/cw-agent/config"
 	optionalRestart = "yes"
 }
-
 ssm_parameter_store_name = "/cw-agent/config"
 
 ###Security Groups###
