@@ -15,6 +15,20 @@ cloudwatchalerts_sqs_name = "aws-trainee-cloudwatchalerts-queue"
 flowlogrole_name = "aws-trainee-vpc-flow-log-role"
 flowlogrole_policy_name = "aws-trainee-vpc-flow-log-policy"
 
+###AWS_System_Manager###
+cw_agent_confg = "test"
+install_cw_agent_parameters = {
+  action = "Install"
+  name = "AmazonCloudWatchAgent"
+}
+configure_cw_agent_parameters = {
+  action = "configure"
+	mode = "ec2"
+	optionalConfigurationSource = "ssm"
+	optionalConfigurationLocation = "/cw-agent/config"
+	optionalRestart = "yes"
+}
+
 ###Security Groups###
 sg_name = "NIH-SG"
 sg_description = "Security groups for ABAC within NIH CIDR block"

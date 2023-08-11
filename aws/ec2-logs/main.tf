@@ -3,6 +3,6 @@ module "iam_policy" {
 }
 
 module "Systems_Manager" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm"
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
   instance_id = module.iam_policy.ec2_instance_id
 }

@@ -96,6 +96,34 @@
 #   sg_tags = var.common_tags
 # }
 
-# module "Systems_Manager" {
-#   source = "../../terraform-modules/aws/platform-services/aws_ssm"
+###AWS_Systems_Manager###
+
+module "iam_policy" {
+  source = "../../terraform-modules/aws/iam/iam_policy_cloudwatch"
+}
+
+# module "ssm_parameter_store_cwa_config" {
+#     source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
+#     name = "/cw-agent/config"
+#     description = "configuration file for cloudwatch agent"
+#     type = "String"
+#     value = var.cw_agent_confg
+#     tags = var.common_tags
+# }
+
+module "ssm_InstallCloudWatchAgent" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+  name = "AWS-ConfigureAWSPackage"
+  parameters = var.install_cw_agent_parameters
+  key = "InstanceIds"
+  instance_id = [module.iam_policy.ec2_instance_id]
+  #s3_bucket_name = ""  
+}
+
+# module "ssm_ConfigureCloudWatchAgent" {
+#     source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+#   name = "AmazonCloudWatch-ManageAgent"
+#   parameters = var.configure_cw_agent_parameters
+#   key = "InstanceIds"
+#   instance_id = module.iam_policy.ec2_instance_id
 # }

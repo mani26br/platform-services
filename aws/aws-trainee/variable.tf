@@ -63,6 +63,20 @@ variable "flowlogrole_policy_name" {
   default = ""
 }
 
+###AWS_Systems_Manager### 
+
+variable "cw_agent_confg" {
+  type = string
+}
+
+variable "install_cw_agent_parameters" {
+  type = map(string)
+}
+
+variable "configure_cw_agent_parameters" {
+  type = map(string)
+}
+
 ##Security_Group###
 
 variable "sg_name" {
@@ -80,3 +94,4 @@ variable "sg_ingress" {
 variable "sg_egress" {
   type = any
 }
+
