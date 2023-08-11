@@ -65,7 +65,7 @@ variable "flowlogrole_policy_name" {
 
 ###AWS_Systems_Manager### 
 
-variable "cw_agent_confg" {
+variable "cw_agent_config" {
   type = string
 }
 
