@@ -63,7 +63,11 @@ variable "flowlogrole_policy_name" {
   default = ""
 }
 
-###AWS_Systems_Manager### 
+###AWS_Systems_Manager###
+
+variable "aws_ssm_tags" {
+  type = list(map(string))
+}
 
 variable "cw_agent_config" {
   type = string

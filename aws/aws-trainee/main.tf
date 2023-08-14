@@ -106,8 +106,7 @@ module "ssm_InstallCloudWatchAgent" {
   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
   name = "AWS-ConfigureAWSPackage"
   parameters = var.install_cw_agent_parameters
-  key = "InstanceIds"
-  instance_id = [module.iam_policy.ec2_instance_id]
+  target_key_values = var.aws_ssm_tags
   #s3_bucket_name = ""  
 }
 
@@ -125,6 +124,5 @@ module "ssm_ConfigureCloudWatchAgent" {
   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
   name = "AmazonCloudWatch-ManageAgent"
   parameters = var.configure_cw_agent_parameters
-  key = "InstanceIds"
-  instance_id = [module.iam_policy.ec2_instance_id]
+  target_key_values = var.aws_ssm_tags
 }

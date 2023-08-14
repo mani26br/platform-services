@@ -16,6 +16,25 @@ flowlogrole_name = "aws-trainee-vpc-flow-log-role"
 flowlogrole_policy_name = "aws-trainee-vpc-flow-log-policy"
 
 ###AWS_System_Manager###
+aws_ssm_tags = [
+    {
+      key = "tag:tag1Key"
+      values = "org"
+    },
+    {
+      key = "tag:tag2Key"
+      values = "program"
+    },
+    {
+      key = "tag:tag3Key"
+      values = "project"
+    },
+    {
+      key = "tag:tag4Key"
+      values = "Access-team"
+    }
+  ]
+
 cw_agent_config = <<EOF
   {
 	"agent": {
