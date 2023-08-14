@@ -11,7 +11,7 @@
 # }
 
 # module "cloudwatch_log_metric_filter" {
-#   source ="../../terraform-modules/aws/cloudwatch/metric-filter"
+#   source ="../../terraform-modules/aws/cloudwatch/log-metric-filter"
 #   for_each = local.CloudTrailMetrics
 #   log_group_name = var.cloudtrail_loggroup_name
 #   name = "${each.key}"
