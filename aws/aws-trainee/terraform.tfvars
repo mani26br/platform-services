@@ -46,7 +46,7 @@ cw_agent_config = <<EOF
 				"collect_list": [
 					{
 						"file_path": "/var/log/syslog", 
-						"log_group_name": "ec2/{instance_id}/syslog",
+						"log_group_name": "ec2/syslog",
 						"log_stream_name": "{instance_id}",
 						"retention_in_days": -1
 					}
