@@ -111,6 +111,27 @@ data "aws_iam_policy_document" "flow_log_role_policy" {
   }
 }
 
+###AWS_System_Manager_S3_Bucket_Policy###
+data "aws_iam_policy_document" "aws_ssm_s3_policy" {
+  version = "2012-10-17"
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["ssm.amazonaws.com"]
+    }
+
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:PutObjectAcl"
+    ]
+ 
+    resources = ["arn:aws:s3:::${var.aws_ssm_bucket_name}/*"]
+  }
+}
+
 ###Security_Group_ABAC_Policy###
 
 data "aws_iam_policy_document" "sg_abac_policy" {

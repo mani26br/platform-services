@@ -85,6 +85,10 @@ variable "configure_cw_agent_parameters" {
   type = map(string)
 }
 
+variable "aws_ssm_bucket_name" {
+  type = string
+}
+
 ##Security_Group###
 
 variable "sg_name" {

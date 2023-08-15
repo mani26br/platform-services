@@ -102,12 +102,20 @@ module "iam_policy" {
   source = "../../terraform-modules/aws/iam/iam_policy_cloudwatch"
 }
 
+module "aws_ssm_s3_bucket" {
+  source = "../../terraform-modules/aws/platform-services/s3_bucket"
+  bucket = var.aws_ssm_bucket_name
+  policy = data.aws_iam_policy_document.aws_ssm_s3_policy.json
+  region = var.AWS_REGION
+  bucket_tags = var.common_tags
+}
+
 module "ssm_InstallCloudWatchAgent" {
   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
   name = "AWS-ConfigureAWSPackage"
   parameters = var.install_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
-  #s3_bucket_name = ""  
+  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
 }
 
 module "ssm_parameter_store_cwa_config" {
@@ -125,4 +133,5 @@ module "ssm_ConfigureCloudWatchAgent" {
   name = "AmazonCloudWatch-ManageAgent"
   parameters = var.configure_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
+  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
 }
