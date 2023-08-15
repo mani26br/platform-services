@@ -32,6 +32,17 @@ locals {
 }
 
 locals {
+  VPCFlowLogGroupNames = {
+    for vpc_id in data.aws_vpcs.current.ids :
+      vpc_id => module.vpc_flowlog[vpc_id].vpc_flowloggroup_name
+  }
+}
+
+output "test" {
+  value = local.VPCFlowLogGroupNames
+}
+
+locals {
   CloudTrailMetrics = {
     "CloudTrailChange" = "{($.eventName=CreateTrail) || ($.eventName=UpdateTrail) || ($.eventName=DeleteTrail) || ($.eventName=StartLogging) || ($.eventName=StopLogging)}"
     "IamCreateAccessKey" = "{($.eventName=CreateAccessKey)}"
