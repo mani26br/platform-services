@@ -36,7 +36,7 @@ aws_ssm_tags = [
     # {
     #   key ="InstanceIds"
     #   values = "*"
-    # }
+    # },
   ]
 
 cw_agent_config = <<EOF
