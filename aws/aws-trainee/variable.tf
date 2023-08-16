@@ -38,10 +38,6 @@ locals {
 #   }
 # }
 
-# output "test" {
-#   value = local.VPCFlowLogGroupNames
-# }
-
 locals {
   CloudTrailMetrics = {
     "CloudTrailChange" = "{($.eventName=CreateTrail) || ($.eventName=UpdateTrail) || ($.eventName=DeleteTrail) || ($.eventName=StartLogging) || ($.eventName=StopLogging)}"
