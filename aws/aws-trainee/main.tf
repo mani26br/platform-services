@@ -116,7 +116,7 @@ module "ssm_InstallCloudWatchAgent" {
   name = "AWS-ConfigureAWSPackage"
   parameters = var.install_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
-  schedule_expression = "cron(40 16 ? * WED *)"
+  schedule_expression = "cron(0 16 ? * WED *)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
 }
 
@@ -130,11 +130,10 @@ module "ssm_parameter_store_cwa_config" {
 }
 
 module "ssm_ConfigureCloudWatchAgent" {
-  depends_on = [module.ssm_InstallCloudWatchAgent]
   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
   name = "AmazonCloudWatch-ManageAgent"
   parameters = var.configure_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
-  schedule_expression = "cron(45 16 ? * WED *)"
+  schedule_expression = "cron(5 16 ? * WED *)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
 }
