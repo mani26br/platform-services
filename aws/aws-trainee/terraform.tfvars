@@ -73,7 +73,7 @@ configure_cw_agent_parameters = {
 	optionalRestart = "yes"
 }
 ssm_parameter_store_name = "/cw-agent/config"
-aws_ssm_bucket_name = "aws-logs-archive-aws-ssm-s3-bucket"
+aws_ssm_bucket_name = "aws-trainee-aws-ssm-s3-bucket"
 
 ###Security Groups###
 sg_name = "NIH-SG"
