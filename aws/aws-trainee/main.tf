@@ -116,6 +116,7 @@ module "ssm_InstallCloudWatchAgent" {
   name = "AWS-ConfigureAWSPackage"
   parameters = var.install_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
+  schedule_expression = "cron(0 11 ? * 3)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
 }
 
@@ -134,5 +135,6 @@ module "ssm_ConfigureCloudWatchAgent" {
   name = "AmazonCloudWatch-ManageAgent"
   parameters = var.configure_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
+  schedule_expression = "cron(5 11 ? * 3)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
 }
