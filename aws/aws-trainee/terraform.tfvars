@@ -17,26 +17,26 @@ flowlogrole_policy_name = "aws-trainee-vpc-flow-log-policy"
 
 ###AWS_System_Manager###
 aws_ssm_tags = [
-    {
-      key = "tag:tag1Key"
-      values = "org"
-    },
-    {
-      key = "tag:tag2Key"
-      values = "program"
-    },
-    {
-      key = "tag:tag3Key"
-      values = "project"
-    },
-    {
-      key = "tag:tag4Key"
-      values = "Access-team"
-    },
     # {
-    #   key ="InstanceIds"
-    #   values = "*"
+    #   key = "tag:tag1Key"
+    #   values = "org"
     # },
+    # {
+    #   key = "tag:tag2Key"
+    #   values = "program"
+    # },
+    # {
+    #   key = "tag:tag3Key"
+    #   values = "project"
+    # },
+    # {
+    #   key = "tag:tag4Key"
+    #   values = "Access-team"
+    # },
+    {
+      key ="InstanceIds"
+      values = "*"
+    },
   ]
 
 cw_agent_config = <<EOF
@@ -63,8 +63,8 @@ cw_agent_config = <<EOF
 					},
           
           {
-						"file_path": "/var/log/cloud-init.log", 
-						"log_group_name": "/aws/ssm/265129476828/Prod/ec2/cloudlogs",
+						"file_path": "C:\Windows\system32\winevt\Logs\System.evtx", 
+						"log_group_name": "/aws/ssm/265129476828/Prod/ec2/WinSysLogs",
 						"log_stream_name": "{instance_id}",
 						"retention_in_days": -1
 					}
@@ -87,7 +87,7 @@ configure_cw_agent_parameters = {
 	optionalRestart = "yes"
 }
 ssm_parameter_store_name = "/cw-agent/config"
-aws_ssm_bucket_name = "aws-trainee-aws-ssm-s3-bucket"
+aws_ssm_bucket_name = "aws-trainee-ssm-s3-bucket"
 
 ###Security Groups###
 sg_name = "NIH-SG"
