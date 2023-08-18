@@ -110,14 +110,14 @@ module "aws_ssm_s3_bucket" {
   bucket_tags = var.common_tags
 }
 
-# module "ssm_InstallCloudWatchAgent" {
-#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
-#   name = "AWS-ConfigureAWSPackage"
-#   parameters = var.install_cw_agent_parameters
-#   target_key_values = var.aws_ssm_tags
-#   schedule_expression = "cron(35 13 ? * THU *)"
-#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
-# }
+module "ssm_InstallCloudWatchAgent" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+  name = "AWS-ConfigureAWSPackage"
+  parameters = var.install_cw_agent_parameters
+  target_key_values = var.aws_ssm_tags
+  schedule_expression = "cron(35 13 ? * THU *)"
+  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
+}
 
 # module "ssm_parameter_store_cwa_config" {
 #     source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
@@ -137,18 +137,18 @@ module "aws_ssm_s3_bucket" {
 #   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
 # }
 
-module "ssm_maintenance_window" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window"
+# module "ssm_maintenance_window" {
+#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window"
 
-  name            = "test-window"
-  schedule        = "cron(0 2 ? * SUN *)" # Example schedule
-  duration        = 4
-  cutoff          = 1
-  task_arn        = "AWS-ConfigureAWSPackage"
-  task_type       = "RUN_COMMAND"
-  target_key_values = var.aws_ssm_tags
-  output_s3_bucket = module.aws_ssm_s3_bucket.s3_bucket_name
-  service_role_arn = module.iam_policy.iam_role_arn
-  #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
-  parameter       = var.install_cw_agent_parameters
-}
+#   name            = "test-window"
+#   schedule        = "cron(30 19 ? * FRI *)"
+#   duration        = 2
+#   cutoff          = 1
+#   task_arn        = "AWS-ConfigureAWSPackage"
+#   task_type       = "RUN_COMMAND"
+#   target_key_values = var.aws_ssm_tags
+#   output_s3_bucket = module.aws_ssm_s3_bucket.s3_bucket_name
+#   service_role_arn = module.iam_policy.iam_role_arn
+#   #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
+#   #parameter       = var.install_cw_agent_parameters
+# }
