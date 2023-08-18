@@ -137,3 +137,19 @@ module "ssm_ConfigureCloudWatchAgent" {
   schedule_expression = "cron(38 13 ? * THU *)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
 }
+
+module "maintenance_window" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance-window"
+
+  name            = "test-window"
+  schedule        = "cron(0 2 ? * SUN *)" # Example schedule
+  duration        = 4
+  cutoff          = 1
+  task_arn        = "AWS-ConfigureAWSPackage"
+  task_type       = "RUN_COMMAND"
+  target_key_values = var.aws_ssm_tags
+  output_s3_bucket = module.aws_ssm_s3_bucket.s3_bucket_name
+  service_role_arn = module.iam_policy.iam_role_arn
+  #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
+  parameter       = var.install_cw_agent_parameters
+}

@@ -53,6 +53,20 @@ cw_agent_config = <<EOF
 						"log_group_name": "/aws/ssm/265129476828/Prod/ec2/syslogs",
 						"log_stream_name": "{instance_id}",
 						"retention_in_days": -1
+					},
+
+          {
+						"file_path": "/var/log/audit/audit.log", 
+						"log_group_name": "/aws/ssm/265129476828/Prod/ec2/auditlogs",
+						"log_stream_name": "{instance_id}",
+						"retention_in_days": -1
+					},
+          
+          {
+						"file_path": "/var/log/cloud-init.log", 
+						"log_group_name": "/aws/ssm/265129476828/Prod/ec2/cloudlogs",
+						"log_stream_name": "{instance_id}",
+						"retention_in_days": -1
 					}
 				]
 			}
