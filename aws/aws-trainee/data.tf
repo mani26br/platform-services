@@ -132,6 +132,36 @@ data "aws_iam_policy_document" "aws_ssm_s3_policy" {
   }
 }
 
+###AWS_System_Manager_ec2_policy###
+data "aws_iam_policy_document" "aws_ssm_ec2_policy" {
+
+  statement {
+    sid = "AllowCloudWatchLogs"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:DescribeLogStreams"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+  statement {
+    sid = "AllowS3Output"
+    effect = "Allow"
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:PutObjectAcl"
+    ]
+    resources = [
+      "arn:aws:s3:::aws-trainee-ssm-s3-bucket/*"
+    ]
+  }
+}
+
 ###Security_Group_ABAC_Policy###
 
 data "aws_iam_policy_document" "sg_abac_policy" {

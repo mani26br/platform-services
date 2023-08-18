@@ -98,26 +98,26 @@
 
 ###AWS_Systems_Manager###
 
-module "iam_policy" {
-  source = "../../terraform-modules/aws/iam/iam_policy_cloudwatch"
-}
+# module "iam_policy" {
+#   source = "../../terraform-modules/aws/iam/iam_policy_cloudwatch"
+# }
 
-module "aws_ssm_s3_bucket" {
-  source = "../../terraform-modules/aws/platform-services/s3_bucket"
-  bucket = var.aws_ssm_bucket_name
-  policy = data.aws_iam_policy_document.aws_ssm_s3_policy.json
-  region = var.AWS_REGION
-  bucket_tags = var.common_tags
-}
+# module "aws_ssm_s3_bucket" {
+#   source = "../../terraform-modules/aws/platform-services/s3_bucket"
+#   bucket = var.aws_ssm_bucket_name
+#   policy = data.aws_iam_policy_document.aws_ssm_s3_policy.json
+#   region = var.AWS_REGION
+#   bucket_tags = var.common_tags
+# }
 
-module "ssm_InstallCloudWatchAgent" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
-  name = "AWS-ConfigureAWSPackage"
-  parameters = var.install_cw_agent_parameters
-  target_key_values = var.aws_ssm_tags
-  schedule_expression = "cron(35 13 ? * THU *)"
-  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
-}
+# module "ssm_InstallCloudWatchAgent" {
+#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+#   name = "AWS-ConfigureAWSPackage"
+#   parameters = var.install_cw_agent_parameters
+#   target_key_values = var.aws_ssm_tags
+#   schedule_expression = "cron(35 13 ? * THU *)"
+#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
+# }
 
 # module "ssm_parameter_store_cwa_config" {
 #     source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
@@ -152,3 +152,11 @@ module "ssm_InstallCloudWatchAgent" {
 #   #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
 #   #parameter       = var.install_cw_agent_parameters
 # }
+
+module "ec2_iam_policy" {
+  source = "../../terraform-modules/aws/iam/iam_policy"
+  iam_policy_name = "AmazonSSM_S3_Policy"
+  iam_policy_path = "/"
+  iam_policy_description = "This policy is used to give ec2 access to create CloudWatch logs and manage s3 objects"
+  iam_policy_policy   = data.aws_iam_policy_document.aws_ssm_ec2_policy.json
+}
