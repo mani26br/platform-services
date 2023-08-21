@@ -115,7 +115,8 @@
 #   name = "AWS-ConfigureAWSPackage"
 #   parameters = var.install_cw_agent_parameters
 #   target_key_values = var.aws_ssm_tags
-#   schedule_expression = "cron(35 13 ? * THU *)"
+#   #schedule_expression = "cron(35 13 ? * THU *)"
+#   schedule_expression = "at(2023-08-21T16:43:00)"
 #   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
 # }
 
@@ -133,7 +134,8 @@
 #   name = "AmazonCloudWatch-ManageAgent"
 #   parameters = var.configure_cw_agent_parameters
 #   target_key_values = var.aws_ssm_tags
-#   schedule_expression = "cron(38 13 ? * THU *)"
+#   #schedule_expression = "cron(38 13 ? * THU *)"
+#   schedule_expression = "at(2023-08-21T16:45:00)"
 #   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
 # }
 
@@ -157,6 +159,6 @@ module "ec2_iam_policy" {
   source = "../../terraform-modules/aws/iam/iam_policy"
   iam_policy_name = "AmazonSSM_S3_Policy"
   iam_policy_path = "/"
-  iam_policy_description = "This policy is used to give ec2 access to create CloudWatch logs and manage s3 objects"
+  iam_policy_description = "This policy is used to give ec2 access"
   iam_policy_policy   = data.aws_iam_policy_document.aws_ssm_ec2_policy.json
 }

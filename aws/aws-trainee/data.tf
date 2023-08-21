@@ -136,20 +136,20 @@ data "aws_iam_policy_document" "aws_ssm_s3_policy" {
 data "aws_iam_policy_document" "aws_ssm_ec2_policy" {
 
   statement {
-    sid = "AllowCloudWatchLogs"
+    sid = "PublishSyslogsToCloudWatchLogs"
     effect = "Allow"
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
-      "logs:DescribeLogStreams"
     ]
     resources = [
-      "*"
+      "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ssm/${data.aws_caller_identity.current.account_id}/${var.common_tags["environment"]}/ec2/syslogs:*",
+      "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ssm/${data.aws_caller_identity.current.account_id}/${var.common_tags["environment"]}/ec2/auditlogs:*"
     ]
   }
   statement {
-    sid = "AllowS3Output"
+    sid = "PublishSSMResultsToS3"
     effect = "Allow"
     actions = [
       "s3:PutObject",
@@ -157,7 +157,8 @@ data "aws_iam_policy_document" "aws_ssm_ec2_policy" {
       "s3:PutObjectAcl"
     ]
     resources = [
-      "arn:aws:s3:::aws-trainee-ssm-s3-bucket/*"
+      "arn:aws:s3:::${var.aws_ssm_bucket_name}/*",
+      "arn:aws:s3:::aws-ifx-snow-sgc-data/*"
     ]
   }
 }

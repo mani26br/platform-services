@@ -60,13 +60,6 @@ cw_agent_config = <<EOF
 						"log_group_name": "/aws/ssm/265129476828/Prod/ec2/auditlogs",
 						"log_stream_name": "{instance_id}",
 						"retention_in_days": -1
-					},
-          
-          {
-						"file_path": "C:\Windows\system32\winevt\Logs\System.evtx", 
-						"log_group_name": "/aws/ssm/265129476828/Prod/ec2/WinSysLogs",
-						"log_stream_name": "{instance_id}",
-						"retention_in_days": -1
 					}
 				]
 			}
