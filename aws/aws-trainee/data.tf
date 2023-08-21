@@ -141,7 +141,7 @@ data "aws_iam_policy_document" "aws_ssm_ec2_policy" {
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
-      "logs:PutLogEvents",
+      "logs:PutLogEvents"
     ]
     resources = [
       "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ssm/${data.aws_caller_identity.current.account_id}/${var.common_tags["environment"]}/ec2/syslogs:*",

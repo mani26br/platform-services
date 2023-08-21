@@ -98,46 +98,46 @@
 
 ###AWS_Systems_Manager###
 
-# module "iam_policy" {
-#   source = "../../terraform-modules/aws/iam/iam_policy_cloudwatch"
-# }
+module "iam_policy" {
+  source = "../../terraform-modules/aws/iam/iam_policy_cloudwatch"
+}
 
-# module "aws_ssm_s3_bucket" {
-#   source = "../../terraform-modules/aws/platform-services/s3_bucket"
-#   bucket = var.aws_ssm_bucket_name
-#   policy = data.aws_iam_policy_document.aws_ssm_s3_policy.json
-#   region = var.AWS_REGION
-#   bucket_tags = var.common_tags
-# }
+module "aws_ssm_s3_bucket" {
+  source = "../../terraform-modules/aws/platform-services/s3_bucket"
+  bucket = var.aws_ssm_bucket_name
+  policy = data.aws_iam_policy_document.aws_ssm_s3_policy.json
+  region = var.AWS_REGION
+  bucket_tags = var.common_tags
+}
 
-# module "ssm_InstallCloudWatchAgent" {
-#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
-#   name = "AWS-ConfigureAWSPackage"
-#   parameters = var.install_cw_agent_parameters
-#   target_key_values = var.aws_ssm_tags
-#   #schedule_expression = "cron(35 13 ? * THU *)"
-#   schedule_expression = "at(2023-08-21T16:43:00)"
-#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
-# }
+module "ssm_InstallCloudWatchAgent" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+  name = "AWS-ConfigureAWSPackage"
+  parameters = var.install_cw_agent_parameters
+  target_key_values = var.aws_ssm_tags
+  #schedule_expression = "cron(35 13 ? * THU *)"
+  schedule_expression = "at(2023-08-21T17:25:00)"
+  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
+}
 
-# module "ssm_parameter_store_cwa_config" {
-#     source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
-#     name = var.ssm_parameter_store_name
-#     description = "configuration file for cloudwatch agent"
-#     type = "String"
-#     value = var.cw_agent_config
-#     tags = var.common_tags
-# }
+module "ssm_parameter_store_cwa_config" {
+    source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
+    name = var.ssm_parameter_store_name
+    description = "configuration file for cloudwatch agent"
+    type = "String"
+    value = var.cw_agent_config
+    tags = var.common_tags
+}
 
-# module "ssm_ConfigureCloudWatchAgent" {
-#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
-#   name = "AmazonCloudWatch-ManageAgent"
-#   parameters = var.configure_cw_agent_parameters
-#   target_key_values = var.aws_ssm_tags
-#   #schedule_expression = "cron(38 13 ? * THU *)"
-#   schedule_expression = "at(2023-08-21T16:45:00)"
-#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
-# }
+module "ssm_ConfigureCloudWatchAgent" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+  name = "AmazonCloudWatch-ManageAgent"
+  parameters = var.configure_cw_agent_parameters
+  target_key_values = var.aws_ssm_tags
+  #schedule_expression = "cron(38 13 ? * THU *)"
+  schedule_expression = "at(2023-08-21T17:28:00)"
+  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
+}
 
 # module "ssm_maintenance_window" {
 #   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window"
