@@ -126,47 +126,48 @@ module "aws_ssm_s3_bucket" {
 #   bucket_tags = var.common_tags
 # }
 
-# module "ssm_InstallCloudWatchAgent" {
-#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
-#   name = "AWS-ConfigureAWSPackage"
-#   parameters = var.install_cw_agent_parameters
-#   target_key_values = var.aws_ssm_tags
-#   #schedule_expression = "cron(35 13 ? * THU *)"
-#   schedule_expression = "at(2023-08-21T17:25:00)"
-#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
-# }
-
-# module "ssm_parameter_store_cwa_config" {
-#     source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
-#     name = var.ssm_parameter_store_name
-#     description = "configuration file for cloudwatch agent"
-#     type = "String"
-#     value = var.cw_agent_config
-#     tags = var.common_tags
-# }
-
-# module "ssm_ConfigureCloudWatchAgent" {
-#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
-#   name = "AmazonCloudWatch-ManageAgent"
-#   parameters = var.configure_cw_agent_parameters
-#   target_key_values = var.aws_ssm_tags
-#   #schedule_expression = "cron(38 13 ? * THU *)"
-#   schedule_expression = "at(2023-08-21T17:28:00)"
-#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
-# }
-
-module "ssm_maintenance_window" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window"
-
-  name            = "test-window"
-  schedule        = "cron(20 14 ? * TUE *)"
-  duration        = 2
-  cutoff          = 1
-  task_arn        = "AWS-ConfigureAWSPackage"
-  task_type       = "RUN_COMMAND"
+module "ssm_InstallCloudWatchAgent" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+  name = "AWS-ConfigureAWSPackage"
+  parameters = var.install_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
-  output_s3_bucket = module.aws_ssm_s3_bucket.s3_bucket_name
-  service_role_arn = module.iam_policy.iam_role_arn
-  #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
-  #parameter       = var.install_cw_agent_parameters
+  #schedule_expression = "cron(35 13 ? * THU *)"
+  schedule_expression = "at(2023-08-22T21:42:00)"
+  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
 }
+
+module "ssm_parameter_store_cwa_config" {
+    source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
+    name = var.ssm_parameter_store_name
+    description = "configuration file for cloudwatch agent"
+    type = "String"
+    value = var.cw_agent_config
+    tags = var.common_tags
+}
+
+module "ssm_ConfigureCloudWatchAgent" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+  name = "AmazonCloudWatch-ManageAgent"
+  parameters = var.configure_cw_agent_parameters
+  target_key_values = var.aws_ssm_tags
+  #schedule_expression = "cron(38 13 ? * THU *)"
+  schedule_expression = "at(2023-08-22T21:45:00)"
+  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
+}
+
+# module "ssm_maintenance_window" {
+#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window"
+
+#   name            = "test-window"
+#   schedule        = "cron(13 16 ? * TUE *)"
+#   duration        = 2
+#   cutoff          = 1
+#   task_arn        = "AWS-ConfigureAWSPackage"
+#   task_type       = "RUN_COMMAND"
+#   target_key_values = var.aws_ssm_tags
+#   output_s3_bucket = module.aws_ssm_s3_bucket.s3_bucket_name
+#   #service_role_arn = module.iam_policy.iam_role_arn
+#   service_role_arn = "arn:aws:iam::aws:policy/service-role/AmazonSSMMaintenanceWindowRole"
+#   #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
+#   #parameter       = var.install_cw_agent_parameters
+# }
