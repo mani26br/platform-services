@@ -128,7 +128,28 @@ data "aws_iam_policy_document" "aws_ssm_s3_policy" {
       "s3:PutObjectAcl"
     ]
  
-    resources = ["arn:aws:s3:::${var.aws_ssm_bucket_name}/*"]
+    resources = ["arn:aws:s3:::${var.aws_ssm_bucket_name}/*",]
+  }
+}
+
+###AWS_System_Manager_SGC_S3_Bucket_Policy###
+data "aws_iam_policy_document" "aws_ssm_sgc_s3_policy" {
+  version = "2012-10-17"
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["ssm.amazonaws.com"]
+    }
+
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:PutObjectAcl"
+    ]
+ 
+    resources = ["arn:aws:s3:::${var.aws_ssm_sgc_bucket_name}/*"]
   }
 }
 
@@ -158,7 +179,7 @@ data "aws_iam_policy_document" "aws_ssm_ec2_policy" {
     ]
     resources = [
       "arn:aws:s3:::${var.aws_ssm_bucket_name}/*",
-      "arn:aws:s3:::aws-ifx-snow-sgc-data/*"
+      "arn:aws:s3:::${var.aws_ssm_sgc_bucket_name}/*"
     ]
   }
 }

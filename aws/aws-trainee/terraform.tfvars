@@ -81,6 +81,7 @@ configure_cw_agent_parameters = {
 }
 ssm_parameter_store_name = "/cw-agent/config"
 aws_ssm_bucket_name = "aws-trainee-ssm-s3-bucket"
+aws_ssm_sgc_bucket_name = "aws-trainee-snow-sgc-data"
 
 ###Security Groups###
 sg_name = "NIH-SG"
