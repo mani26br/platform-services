@@ -98,7 +98,7 @@
 
 ###AWS_Systems_Manager###
 
-module "iam_policy" {
+module "ssm_ec2" {
   source = "../../terraform-modules/aws/iam/iam_policy_cloudwatch"
 }
 
@@ -132,7 +132,7 @@ module "ssm_InstallCloudWatchAgent" {
   parameters = var.install_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
   #schedule_expression = "cron(35 13 ? * THU *)"
-  schedule_expression = "at(2023-08-22T21:42:00)"
+  schedule_expression = "at(2023-08-23T17:45:00)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
 }
 
@@ -151,7 +151,7 @@ module "ssm_ConfigureCloudWatchAgent" {
   parameters = var.configure_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
   #schedule_expression = "cron(38 13 ? * THU *)"
-  schedule_expression = "at(2023-08-22T21:45:00)"
+  schedule_expression = "at(2023-08-23T17:47:00)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
 }
 
