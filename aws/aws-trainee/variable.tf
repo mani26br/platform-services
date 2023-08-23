@@ -26,17 +26,16 @@ variable "cloudwatchalerts_sqs_name" {
 }
 
 locals {
+  EC2SysLogsMetrics = {
+    "SysLogs" = "ERROR"
+  }
+}
+
+locals {
   VPCFlowLogsMetrics = {
     "VPCFlowLogs" = "[version, account_id, interface_id, src_ip, dest_ip, src_port, dest_port=22, protocol, pkt_count, byte_count, start_time, end_time, action=\"ACCEPT\",status]" 
   }
 }
-
-# locals {
-#   VPCFlowLogGroupNames = {
-#     for vpc_id in data.aws_vpcs.current.ids :
-#       vpc_id => module.vpc_flowlog[vpc_id].vpc_flowloggroup_name
-#   }
-# }
 
 locals {
   CloudTrailMetrics = {

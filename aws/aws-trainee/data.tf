@@ -6,9 +6,14 @@ data "aws_vpcs" "current" {}
 #     for idx, vpc_id in data.aws_vpcs.current.ids : var.vpc_name[idx] => vpc_id
 #   }
 # }
-data "aws_cloudwatch_log_groups" "example" {
+data "aws_cloudwatch_log_groups" "ssm" {
   log_group_name_prefix = "/aws/ssm/"
 }
+
+data "aws_cloudwatch_log_groups" "vpcflowlogs" {
+  log_group_name_prefix = "/aws/vpcflowlogs/"
+}
+
 
 ###CWA Policies###
 

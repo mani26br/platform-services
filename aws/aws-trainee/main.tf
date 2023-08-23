@@ -33,8 +33,27 @@
 # module "vpc_flowlogs_cloudwatch_log_metric_filter" {
 #   source ="../../terraform-modules/aws/cloudwatch/log-metric-filter"
 #   for_each = local.VPCFlowLogsMetrics
-#   #log_group_name = module.vpc_flowlog[data.aws_vpcs.current.ids[0]].vpc_flowloggroup_name
-#   log_group_name = local.VPCFlowLogGroupNames
+#   log_group_name = data.aws_cloudwatch_log_groups.vpcflowlogs.log_group_names
+#   name = "${each.key}"
+#   metric_transformation_name = "${each.key}"
+#   pattern = "${each.value}"
+#   metric_transformation_namespace = var.metric_namespace
+# }
+
+# module "ec2_logs_cloudwatch_alarms" {
+#   source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
+#   for_each = #local.VPCFlowLogsMetrics
+#   alarm_name = "${each.key}"
+#   metric_name = "${each.key}"
+#   namespace = var.metric_namespace
+#   alarm_actions = [module.sns_cloudwatchalerts_notifications.sns_topic_arn]
+#   tags = var.common_tags
+# }
+
+# module "ec2_logs_cloudwatch_log_metric_filter" {
+#   source ="../../terraform-modules/aws/cloudwatch/log-metric-filter"
+#   for_each = local.EC2SysLogsMetrics
+#   log_group_name = data.aws_cloudwatch_log_groups.ssm.log_group_names
 #   name = "${each.key}"
 #   metric_transformation_name = "${each.key}"
 #   pattern = "${each.value}"
@@ -47,6 +66,13 @@
 #   sns_topic_display_name = var.cloudwatchalerts_sns_topic_name
 #   sns_topic_tags = var.common_tags
 #   sns_topic_policy = data.aws_iam_policy_document.cwa_sns_topic_policy.json
+# }
+
+# module "cwa_email_sns_topic_subscription"{
+#   source = "../../terraform-modules/aws/sns/sns_topic_subscription"
+#   sns_topic_subscription_topic_arn = module.sns_cloudwatchalerts_notifications.sns_topic_arn
+#   sns_topic_subscription_protocol = "email"
+#   sns_topic_subscription_endpoint = "hyunmin.choi@axleinfo.com"
 # }
 
 # module "sqs_cloudwatchalerts" {
@@ -132,7 +158,7 @@ module "ssm_InstallCloudWatchAgent" {
   parameters = var.install_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
   #schedule_expression = "cron(35 13 ? * THU *)"
-  schedule_expression = "at(2023-08-23T17:45:00)"
+  schedule_expression = "at(2023-08-23T22:00:00)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
 }
 
@@ -151,7 +177,7 @@ module "ssm_ConfigureCloudWatchAgent" {
   parameters = var.configure_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
   #schedule_expression = "cron(38 13 ? * THU *)"
-  schedule_expression = "at(2023-08-23T17:47:00)"
+  schedule_expression = "at(2023-08-23T22:00:00)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
 }
 
