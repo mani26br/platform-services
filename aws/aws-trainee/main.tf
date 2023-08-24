@@ -183,19 +183,36 @@ module "aws_ssm_s3_bucket" {
 #   s3_key_prefix = "ConfigureCloudWatchAgent/"
 # }
 
-module "ssm_maintenance_window" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window"
+###AWS_Maintenance_Window###
 
+module "ssm_maintenance_window" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window/window"
   name            = "test-window"
-  schedule        = "cron(07 20 ? * THU *)"
+  schedule        = "cron(30 20 ? * THU *)"
   duration        = 2
   cutoff          = 1
+}
+
+module "ssm_maintenance_window_target" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window/window_target"
+  window_id = module.ssm_maintenance_window.maintenance_window_id
+  name          = "maintenance-window-target"
+  description   = "This is a maintenance window target"
+  resource_type = "INSTANCE"
+  target_key_values = var.aws_ssm_tags
+}
+
+module "ssm_maintenance_window_task" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window/window_task"
+  window_id = module.ssm_maintenance_window.maintenance_window_id
   task_arn        = "AWS-ConfigureAWSPackage"
   task_type       = "RUN_COMMAND"
-  target_key_values = var.ssm_window_targets
+  window_target_ids_values = [module.ssm_maintenance_window_target.maintenance_window_target_id]
   output_s3_bucket = module.aws_ssm_s3_bucket.s3_bucket_name
   output_s3_key_prefix = "MaintenanceWindowinstall/"
   service_role_arn = module.ssm_ec2.iam_role_arn
   #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
   #parameter       = var.install_cw_agent_parameters
 }
+
+

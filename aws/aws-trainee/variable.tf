@@ -75,10 +75,6 @@ variable "aws_ssm_tags" {
   type = list(map(string))
 }
 
-variable "ssm_window_targets" {
-  type = list(map(string))
-}
-
 variable "cw_agent_config" {
   type = string
 }

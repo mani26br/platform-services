@@ -17,33 +17,26 @@ flowlogrole_policy_name = "aws-trainee-vpc-flow-log-policy"
 
 ###AWS_System_Manager###
 aws_ssm_tags = [
-    # {
-    #   key = "tag:tag1Key"
-    #   values = "org"
-    # },
-    # {
-    #   key = "tag:tag2Key"
-    #   values = "program"
-    # },
-    # {
-    #   key = "tag:tag3Key"
-    #   values = "project"
-    # },
-    # {
-    #   key = "tag:tag4Key"
-    #   values = "Access-team"
-    # },
     {
-      key = "InstanceIds"
-      values = "*"
+      key = "tag:tag1Key"
+      values = "org"
     },
-  ]
-
-  ssm_window_targets = [
     {
-      key = "WindowTargetIds"
-      values = "48d4a393-7058-4680-bba1-6080937be256"
+      key = "tag:tag2Key"
+      values = "program"
     },
+    {
+      key = "tag:tag3Key"
+      values = "project"
+    },
+    {
+      key = "tag:tag4Key"
+      values = "Access-team"
+    },
+    # {
+    #   key = "InstanceIds"
+    #   values = "*"
+    # },
   ]
 
 cw_agent_config = <<EOF
