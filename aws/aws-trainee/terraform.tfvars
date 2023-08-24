@@ -34,8 +34,15 @@ aws_ssm_tags = [
     #   values = "Access-team"
     # },
     {
-      key ="InstanceIds"
+      key = "InstanceIds"
       values = "*"
+    },
+  ]
+
+  ssm_window_targets = [
+    {
+      key = "WindowTargetIds"
+      values = "1e123250-7b5e-4ce0-a7fd-ae142eb71862"
     },
   ]
 

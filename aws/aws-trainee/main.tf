@@ -42,7 +42,7 @@
 
 # module "ec2_logs_cloudwatch_alarms" {
 #   source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
-#   for_each = #local.VPCFlowLogsMetrics
+#   for_each = local.EC2SysLogsMetrics
 #   alarm_name = "${each.key}"
 #   metric_name = "${each.key}"
 #   namespace = var.metric_namespace
@@ -158,8 +158,9 @@ module "ssm_InstallCloudWatchAgent" {
   parameters = var.install_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
   #schedule_expression = "cron(35 13 ? * THU *)"
-  schedule_expression = "at(2023-08-23T22:00:00)"
-  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name  
+  schedule_expression = "at(2023-08-24T16:17:00)"
+  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name 
+  s3_key_prefix = "InstallCloudWatchAgent/"
 }
 
 module "ssm_parameter_store_cwa_config" {
@@ -177,23 +178,24 @@ module "ssm_ConfigureCloudWatchAgent" {
   parameters = var.configure_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
   #schedule_expression = "cron(38 13 ? * THU *)"
-  schedule_expression = "at(2023-08-23T22:00:00)"
+  schedule_expression = "at(2023-08-24T16:19:00)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
+  s3_key_prefix = "ConfigureCloudWatchAgent/"
 }
 
-# module "ssm_maintenance_window" {
-#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window"
+module "ssm_maintenance_window" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window"
 
-#   name            = "test-window"
-#   schedule        = "cron(13 16 ? * TUE *)"
-#   duration        = 2
-#   cutoff          = 1
-#   task_arn        = "AWS-ConfigureAWSPackage"
-#   task_type       = "RUN_COMMAND"
-#   target_key_values = var.aws_ssm_tags
-#   output_s3_bucket = module.aws_ssm_s3_bucket.s3_bucket_name
-#   #service_role_arn = module.iam_policy.iam_role_arn
-#   service_role_arn = "arn:aws:iam::aws:policy/service-role/AmazonSSMMaintenanceWindowRole"
-#   #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
-#   #parameter       = var.install_cw_agent_parameters
-# }
+  name            = "test-window"
+  schedule        = "cron(58 17 ? * THU *)"
+  duration        = 2
+  cutoff          = 1
+  task_arn        = "AWS-ConfigureAWSPackage"
+  task_type       = "RUN_COMMAND"
+  target_key_values = var.ssm_window_targets
+  output_s3_bucket = module.aws_ssm_s3_bucket.s3_bucket_name
+  output_s3_key_prefix = "MaintenanceWindowinstall/"
+  service_role_arn = module.ssm_ec2.iam_role_arn
+  #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
+  #parameter       = var.install_cw_agent_parameters
+}
