@@ -211,8 +211,8 @@ module "ssm_maintenance_window_task" {
   output_s3_bucket = module.aws_ssm_s3_bucket.s3_bucket_name
   output_s3_key_prefix = "MaintenanceWindowinstall/"
   service_role_arn = module.ssm_ec2.iam_role_arn
+  #parameter = local.MaintenanceWindow
   #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
-  #parameter       = var.install_cw_agent_parameters
 }
 
 

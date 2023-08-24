@@ -70,6 +70,21 @@ variable "flowlogrole_policy_name" {
 }
 
 ###AWS_Systems_Manager###
+locals {
+  MaintenanceWindow = {
+    "name" = "AmazonCloudWatchAgent" 
+    "action" = "Install"
+  }
+}
+
+ # parameter {
+      #   name = "name"
+      #   values = ["AmazonCloudWatchAgent"]
+      # }
+      # parameter {
+      #   name = "action"
+      #   values = ["Install"]
+      # }
 
 variable "aws_ssm_tags" {
   type = list(map(string))
@@ -98,6 +113,8 @@ variable "aws_ssm_bucket_name" {
 variable "aws_ssm_sgc_bucket_name" {
   type = string
 }
+
+###AWS_Maintenance_Window###
 
 ##Security_Group###
 
