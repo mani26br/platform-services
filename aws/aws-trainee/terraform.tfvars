@@ -16,6 +16,13 @@ flowlogrole_name = "aws-trainee-vpc-flow-log-role"
 flowlogrole_policy_name = "aws-trainee-vpc-flow-log-policy"
 
 ###AWS_System_Manager###
+aws_ssm_instanceIds = [
+    {
+      key = "InstanceIds"
+      values = "*"
+    },
+  ]
+
 aws_ssm_tags = [
     {
       key = "tag:tag1Key"
@@ -33,10 +40,6 @@ aws_ssm_tags = [
       key = "tag:tag4Key"
       values = "Access-team"
     },
-    # {
-    #   key = "InstanceIds"
-    #   values = "*"
-    # },
   ]
 
 cw_agent_config = <<EOF
@@ -68,6 +71,33 @@ cw_agent_config = <<EOF
 }
 EOF
 
+window_cw_agent_config = <<EOF
+  {
+  "logs": {
+    "logs_collected": {
+      "windows_events": {
+        "collect_list": [
+          {
+            "event_format": "xml",
+            "event_levels": [
+                    "VERBOSE",
+                    "INFORMATION",
+                    "WARNING",
+                    "ERROR",
+                    "CRITICAL"
+            ],
+            "event_name": "System",
+            "log_group_name": "/aws/ssm/265129476828/Prod/ec2/Windows_System_logs",
+            "log_stream_name": "{instance_id}",
+            "retention_in_days": -1
+            }
+          ]
+      }
+    }
+  }
+  }
+EOF
+
 install_cw_agent_parameters = {
   action = "Install"
   name = "AmazonCloudWatchAgent"
@@ -79,7 +109,13 @@ configure_cw_agent_parameters = {
 	optionalConfigurationLocation = "/cw-agent/config"
 	optionalRestart = "yes"
 }
-ssm_parameter_store_name = "/cw-agent/config"
+configure_window_cw_agent_parameters = {
+  action = "configure"
+	mode = "ec2"
+	optionalConfigurationSource = "ssm"
+	optionalConfigurationLocation = "/cw-agent/config-window"
+	optionalRestart = "yes"
+}
 aws_ssm_bucket_name = "aws-trainee-ssm-s3-bucket"
 aws_ssm_sgc_bucket_name = "aws-trainee-snow-sgc-data"
 

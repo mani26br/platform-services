@@ -70,6 +70,45 @@ variable "flowlogrole_policy_name" {
 }
 
 ###AWS_Systems_Manager###
+
+variable "aws_ssm_instanceIds" {
+  type = list(map(string))
+}
+
+variable "aws_ssm_tags" {
+  type = list(map(string))
+}
+
+variable "cw_agent_config" {
+  type = string
+}
+
+variable "window_cw_agent_config" {
+  type = string
+}
+
+variable "install_cw_agent_parameters" {
+  type = map(string)
+}
+
+variable "configure_cw_agent_parameters" {
+  type = map(string)
+}
+
+variable "configure_window_cw_agent_parameters" {
+  type = map(string)
+}
+
+variable "aws_ssm_bucket_name" {
+  type = string
+}
+
+variable "aws_ssm_sgc_bucket_name" {
+  type = string
+}
+
+###AWS_Maintenance_Window###
+
 locals {
   MaintenanceWindow = {
     "name" = "AmazonCloudWatchAgent" 
@@ -85,36 +124,6 @@ locals {
       #   name = "action"
       #   values = ["Install"]
       # }
-
-variable "aws_ssm_tags" {
-  type = list(map(string))
-}
-
-variable "cw_agent_config" {
-  type = string
-}
-
-variable "ssm_parameter_store_name" {
-  type = string
-}
-
-variable "install_cw_agent_parameters" {
-  type = map(string)
-}
-
-variable "configure_cw_agent_parameters" {
-  type = map(string)
-}
-
-variable "aws_ssm_bucket_name" {
-  type = string
-}
-
-variable "aws_ssm_sgc_bucket_name" {
-  type = string
-}
-
-###AWS_Maintenance_Window###
 
 ##Security_Group###
 

@@ -136,14 +136,6 @@ module "ssm_ec2" {
 #   iam_policy_policy   = data.aws_iam_policy_document.aws_ssm_ec2_policy.json
 # }
 
-module "aws_ssm_s3_bucket" {
-  source = "../../terraform-modules/aws/platform-services/s3_bucket"
-  bucket = var.aws_ssm_bucket_name
-  policy = data.aws_iam_policy_document.aws_ssm_s3_policy.json
-  region = var.AWS_REGION
-  bucket_tags = var.common_tags
-}
-
 # module "aws_ssm_sgc_s3_bucket" {
 #   source = "../../terraform-modules/aws/platform-services/s3_bucket"
 #   bucket = var.aws_ssm_sgc_bucket_name
@@ -152,67 +144,95 @@ module "aws_ssm_s3_bucket" {
 #   bucket_tags = var.common_tags
 # }
 
-# module "ssm_InstallCloudWatchAgent" {
-#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
-#   name = "AWS-ConfigureAWSPackage"
-#   parameters = var.install_cw_agent_parameters
-#   target_key_values = var.aws_ssm_tags
-#   #schedule_expression = "cron(35 13 ? * THU *)"
-#   schedule_expression = "at(2023-08-24T16:17:00)"
-#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name 
-#   s3_key_prefix = "InstallCloudWatchAgent/"
-# }
+module "aws_ssm_s3_bucket" {
+  source = "../../terraform-modules/aws/platform-services/s3_bucket"
+  bucket = var.aws_ssm_bucket_name
+  policy = data.aws_iam_policy_document.aws_ssm_s3_policy.json
+  region = var.AWS_REGION
+  bucket_tags = var.common_tags
+}
 
-# module "ssm_parameter_store_cwa_config" {
-#     source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
-#     name = var.ssm_parameter_store_name
-#     description = "configuration file for cloudwatch agent"
-#     type = "String"
-#     value = var.cw_agent_config
-#     tags = var.common_tags
-# }
+module "ssm_InstallCloudWatchAgent" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+  name = "AWS-ConfigureAWSPackage"
+  parameters = var.install_cw_agent_parameters
+  target_key_values = var.aws_ssm_tags
+  #schedule_expression = "cron(35 13 ? * THU *)"
+  schedule_expression = "at(2023-08-25T04:02:00)"
+  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name 
+  s3_key_prefix = "InstallCloudWatchAgent/"
+}
 
-# module "ssm_ConfigureCloudWatchAgent" {
-#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
-#   name = "AmazonCloudWatch-ManageAgent"
-#   parameters = var.configure_cw_agent_parameters
-#   target_key_values = var.aws_ssm_tags
-#   #schedule_expression = "cron(38 13 ? * THU *)"
-#   schedule_expression = "at(2023-08-24T16:19:00)"
-#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
-#   s3_key_prefix = "ConfigureCloudWatchAgent/"
-# }
+module "ssm_parameter_store_cwa_config" {
+    source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
+    name = "/cw-agent/config"
+    description = "configuration file for cloudwatch agent"
+    type = "String"
+    value = var.cw_agent_config
+    tags = var.common_tags
+}
+
+module "ssm_ConfigureCloudWatchAgent" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+  name = "AmazonCloudWatch-ManageAgent"
+  parameters = var.configure_cw_agent_parameters
+  target_key_values = var.aws_ssm_tags
+  #schedule_expression = "cron(38 13 ? * THU *)"
+  schedule_expression = "at(2023-08-25T02:31:00)"
+  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
+  s3_key_prefix = "ConfigureCloudWatchAgent/"
+}
+
+module "ssm_parameter_store_window_cwa_config" {
+    source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
+    name = "/cw-agent/config-window"
+    description = "configuration file for cloudwatch agent"
+    type = "String"
+    value = var.window_cw_agent_config
+    tags = var.common_tags
+}
+
+module "ssm_Window_ConfigureCloudWatchAgent" {
+  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+  name = "AmazonCloudWatch-ManageAgent"
+  parameters = var.configure_window_cw_agent_parameters
+  target_key_values = var.aws_ssm_tags
+  #schedule_expression = "cron(38 13 ? * THU *)"
+  schedule_expression = "at(2023-08-25T04:05:00)"
+  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
+  s3_key_prefix = "ConfigureCloudWatchAgent/"
+}
 
 ###AWS_Maintenance_Window###
 
-module "ssm_maintenance_window" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window/window"
-  name            = "test-window"
-  schedule        = "cron(30 20 ? * THU *)"
-  duration        = 2
-  cutoff          = 1
-}
+# module "ssm_maintenance_window" {
+#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window/window"
+#   name            = "test-window"
+#   schedule        = "cron(30 20 ? * THU *)"
+#   duration        = 2
+#   cutoff          = 1
+# }
 
-module "ssm_maintenance_window_target" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window/window_target"
-  window_id = module.ssm_maintenance_window.maintenance_window_id
-  name          = "maintenance-window-target"
-  description   = "This is a maintenance window target"
-  resource_type = "INSTANCE"
-  target_key_values = var.aws_ssm_tags
-}
+# module "ssm_maintenance_window_target" {
+#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window/window_target"
+#   window_id = module.ssm_maintenance_window.maintenance_window_id
+#   name          = "maintenance-window-target"
+#   description   = "This is a maintenance window target"
+#   resource_type = "INSTANCE"
+#   target_key_values = var.aws_ssm_tags
+# }
 
-module "ssm_maintenance_window_task" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window/window_task"
-  window_id = module.ssm_maintenance_window.maintenance_window_id
-  task_arn        = "AWS-ConfigureAWSPackage"
-  task_type       = "RUN_COMMAND"
-  window_target_ids_values = [module.ssm_maintenance_window_target.maintenance_window_target_id]
-  output_s3_bucket = module.aws_ssm_s3_bucket.s3_bucket_name
-  output_s3_key_prefix = "MaintenanceWindowinstall/"
-  service_role_arn = module.ssm_ec2.iam_role_arn
-  #parameter = local.MaintenanceWindow
-  #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
-}
+# module "ssm_maintenance_window_task" {
+#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_maintenance_window/window_task"
+#   window_id = module.ssm_maintenance_window.maintenance_window_id
+#   task_arn        = "AWS-ConfigureAWSPackage"
+#   task_type       = "RUN_COMMAND"
+#   window_target_ids_values = [module.ssm_maintenance_window_target.maintenance_window_target_id]
+#   output_s3_bucket = module.aws_ssm_s3_bucket.s3_bucket_name
+#   output_s3_key_prefix = "MaintenanceWindowinstall/"
+#   service_role_arn = module.ssm_ec2.iam_role_arn
+#   #parameter = local.MaintenanceWindow
+#   #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
+# }
 
 
