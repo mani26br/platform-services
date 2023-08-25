@@ -79,6 +79,10 @@ variable "aws_ssm_tags" {
   type = list(map(string))
 }
 
+variable "aws_ssm_resource_group" {
+  type = list(map(string))
+}
+
 variable "cw_agent_config" {
   type = string
 }

@@ -25,21 +25,32 @@ aws_ssm_instanceIds = [
 
 aws_ssm_tags = [
     {
-      key = "tag:tag1Key"
-      values = "org"
+      key = "tag:OS"
+      values = "Windows"
     },
+    # {
+    #   key = "tag:tag1Key"
+    #   values = "org"
+    # },
+    # {
+    #   key = "tag:tag2Key"
+    #   values = "program"
+    # },
+    # {
+    #   key = "tag:tag3Key"
+    #   values = "project"
+    # },
+    # {
+    #   key = "tag:tag4Key"
+    #   values = "Access-team"
+    # },
+  ]
+
+  aws_ssm_resource_group = [
     {
-      key = "tag:tag2Key"
-      values = "program"
-    },
-    {
-      key = "tag:tag3Key"
-      values = "project"
-    },
-    {
-      key = "tag:tag4Key"
-      values = "Access-team"
-    },
+      key = "resource-groups:Name"
+      values= "test"
+    }
   ]
 
 cw_agent_config = <<EOF

@@ -156,9 +156,9 @@ module "ssm_InstallCloudWatchAgent" {
   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
   name = "AWS-ConfigureAWSPackage"
   parameters = var.install_cw_agent_parameters
-  target_key_values = var.aws_ssm_tags
+  target_key_values = var.aws_ssm_instanceIds
   #schedule_expression = "cron(35 13 ? * THU *)"
-  schedule_expression = "at(2023-08-25T04:02:00)"
+  schedule_expression = "at(2023-08-25T14:15:00)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name 
   s3_key_prefix = "InstallCloudWatchAgent/"
 }
@@ -176,9 +176,9 @@ module "ssm_ConfigureCloudWatchAgent" {
   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
   name = "AmazonCloudWatch-ManageAgent"
   parameters = var.configure_cw_agent_parameters
-  target_key_values = var.aws_ssm_tags
+  target_key_values = var.aws_ssm_instanceIds
   #schedule_expression = "cron(38 13 ? * THU *)"
-  schedule_expression = "at(2023-08-25T02:31:00)"
+  schedule_expression = "at(2023-08-25T14:20:00)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
   s3_key_prefix = "ConfigureCloudWatchAgent/"
 }
@@ -197,11 +197,22 @@ module "ssm_Window_ConfigureCloudWatchAgent" {
   name = "AmazonCloudWatch-ManageAgent"
   parameters = var.configure_window_cw_agent_parameters
   target_key_values = var.aws_ssm_tags
-  #schedule_expression = "cron(38 13 ? * THU *)"
-  schedule_expression = "at(2023-08-25T04:05:00)"
+  schedule_expression = "at(2023-08-25T14:25:00)"
   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
   s3_key_prefix = "ConfigureCloudWatchAgent/"
 }
+
+# module "ssm_InstallCloudWatchAgent2" {
+#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+#   association_name = "test"
+#   name = "AWS-ConfigureAWSPackage"
+#   parameters = var.install_cw_agent_parameters
+#   target_key_values = var.aws_ssm_resource_group
+#   #schedule_expression = "cron(35 13 ? * THU *)"
+#   schedule_expression = "at(2023-08-25T19:02:00)"
+#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name 
+#   s3_key_prefix = "InstallCloudWatchAgent/"
+# }
 
 ###AWS_Maintenance_Window###
 
