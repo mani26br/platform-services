@@ -71,7 +71,7 @@ cw_agent_config = <<EOF
 
           {
 						"file_path": "/var/log/audit/audit.log", 
-						"log_group_name": "/aws/ssm/265129476828/Prod/ec2/auditlogs",
+						"log_group_name": "/aws/ssm/265129476828/Prod/ec2/syslogs",
 						"log_stream_name": "{instance_id}",
 						"retention_in_days": -1
 					}
@@ -98,7 +98,7 @@ window_cw_agent_config = <<EOF
                     "CRITICAL"
             ],
             "event_name": "System",
-            "log_group_name": "/aws/ssm/265129476828/Prod/ec2/Windows_System_logs",
+            "log_group_name": "/aws/ssm/265129476828/Prod/ec2/syslogs",
             "log_stream_name": "{instance_id}",
             "retention_in_days": -1
             }
@@ -114,18 +114,23 @@ install_cw_agent_parameters = {
   name = "AmazonCloudWatchAgent"
 }
 configure_cw_agent_parameters = {
-  action = "configure"
+  action = "configure (append)"
 	mode = "ec2"
 	optionalConfigurationSource = "ssm"
-	optionalConfigurationLocation = "/cw-agent/config"
+	optionalConfigurationLocation = "/cpe/cw-agent/infra/config"
 	optionalRestart = "yes"
 }
 configure_window_cw_agent_parameters = {
-  action = "configure"
+  action = "configure (append)"
 	mode = "ec2"
 	optionalConfigurationSource = "ssm"
-	optionalConfigurationLocation = "/cw-agent/config-window"
+	optionalConfigurationLocation = "/cpe/cw-agent/infra/config-window"
 	optionalRestart = "yes"
+}
+status_cw_agent_parameters = {
+  action = "status"
+	mode = "ec2"
+	optionalRestart = "no"
 }
 aws_ssm_bucket_name = "aws-trainee-ssm-s3-bucket"
 aws_ssm_sgc_bucket_name = "aws-trainee-snow-sgc-data"
