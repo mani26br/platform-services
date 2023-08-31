@@ -237,9 +237,23 @@
 # }
 
 ###IAM_USER###
+data "aws_iam_policy_document" "lb_ro" {
+  statement {
+    effect    = "Allow"
+    actions   = ["ec2:Describe*"]
+    resources = ["*"]
+  }
+}
 
-module "IAM_UserProgrammaticAccess." {
+module "IAM_UserProgrammaticAccess" {
   source = "../../terraform-modules/aws/iam/iam_user"
+  iam_user_name = "CPE-test-user"
+  policy = data.aws_iam_policy_document.lb_ro.json
+  iam_user_tags = var.common_tags
+}
+
+output "access" {
+  value = module.IAM_UserProgrammaticAccess.secret
 }
 
 ###Security Groups###
