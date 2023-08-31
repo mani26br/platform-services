@@ -109,24 +109,11 @@
 #   vpc_flow_log_tags = var.common_tags
 # }
 
-###Security Groups###
-
-# module "SecurityGroup" {
-#   source = "../../terraform-modules/aws/securitygroup"
-#   for_each = toset(data.aws_vpcs.current.ids)
-#   sg_name = var.sg_name
-#   sg_description = var.sg_description
-#   sg_ingress = var.sg_ingress
-#   sg_egress = var.sg_egress
-#   assign_vpc_id = "${each.key}"
-#   sg_tags = var.common_tags
-# }
-
 ###AWS_Systems_Manager###
 
-module "ssm_ec2" {
-  source = "../../terraform-modules/aws/iam/iam_policy_cloudwatch"
-}
+# module "ssm_ec2" {
+#   source = "../../terraform-modules/aws/ec2/iam_policy_cloudwatch"
+# }
 
 # module "ec2_iam_policy" {
 #   source = "../../terraform-modules/aws/iam/iam_policy"
@@ -144,78 +131,78 @@ module "ssm_ec2" {
 #   bucket_tags = var.common_tags
 # }
 
-module "aws_ssm_s3_bucket" {
-  source = "../../terraform-modules/aws/platform-services/s3_bucket"
-  bucket = var.aws_ssm_bucket_name
-  policy = data.aws_iam_policy_document.aws_ssm_s3_policy.json
-  region = var.AWS_REGION
-  bucket_tags = var.common_tags
-}
+# module "aws_ssm_s3_bucket" {
+#   source = "../../terraform-modules/aws/platform-services/s3_bucket"
+#   bucket = var.aws_ssm_bucket_name
+#   policy = data.aws_iam_policy_document.aws_ssm_s3_policy.json
+#   region = var.AWS_REGION
+#   bucket_tags = var.common_tags
+# }
 
-module "ssm_InstallCloudWatchAgent" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
-  association_name = "InstallCloudWatchAgent"
-  name = "AWS-ConfigureAWSPackage"
-  parameters = var.install_cw_agent_parameters
-  target_key_values = var.aws_ssm_instanceIds
-  #schedule_expression = "cron(35 13 ? * THU *)"
-  schedule_expression = "at(2023-08-30T19:45:00)"
-  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name 
-  s3_key_prefix = "InstallCloudWatchAgent/"
-}
+# module "ssm_InstallCloudWatchAgent" {
+#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+#   association_name = "InstallCloudWatchAgent"
+#   name = "AWS-ConfigureAWSPackage"
+#   parameters = var.install_cw_agent_parameters
+#   target_key_values = var.aws_ssm_instanceIds
+#   #schedule_expression = "cron(35 13 ? * THU *)"
+#   schedule_expression = "at(2023-08-30T19:45:00)"
+#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name 
+#   s3_key_prefix = "InstallCloudWatchAgent/"
+# }
 
-module "ssm_parameter_store_cwa_config" {
-    source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
-    name = "/cpe/cw-agent/infra/config"
-    description = "configuration file for cloudwatch agent"
-    type = "String"
-    value = var.cw_agent_config
-    tags = var.common_tags
-}
+# module "ssm_parameter_store_cwa_config" {
+#     source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
+#     name = "/cpe/cw-agent/infra/config"
+#     description = "configuration file for cloudwatch agent"
+#     type = "String"
+#     value = var.cw_agent_config
+#     tags = var.common_tags
+# }
 
-module "ssm_ConfigureCloudWatchAgent" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
-  association_name = "ConfigureCloudWatchAgent"
-  name = "AmazonCloudWatch-ManageAgent"
-  parameters = var.configure_cw_agent_parameters
-  target_key_values = var.aws_ssm_instanceIds
-  #schedule_expression = "cron(38 13 ? * THU *)"
-  schedule_expression = "at(2023-08-30T19:50:00)"
-  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
-  s3_key_prefix = "ConfigureCloudWatchAgent/"
-}
+# module "ssm_ConfigureCloudWatchAgent" {
+#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+#   association_name = "ConfigureCloudWatchAgent"
+#   name = "AmazonCloudWatch-ManageAgent"
+#   parameters = var.configure_cw_agent_parameters
+#   target_key_values = var.aws_ssm_instanceIds
+#   #schedule_expression = "cron(38 13 ? * THU *)"
+#   schedule_expression = "at(2023-08-30T19:50:00)"
+#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
+#   s3_key_prefix = "ConfigureCloudWatchAgent/"
+# }
 
-module "ssm_parameter_store_window_cwa_config" {
-    source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
-    name = "/cpe/cw-agent/infra/config-window"
-    description = "configuration file for cloudwatch agent"
-    type = "String"
-    value = var.window_cw_agent_config
-    tags = var.common_tags
-}
+# module "ssm_parameter_store_window_cwa_config" {
+#     source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_parameter"
+#     name = "/cpe/cw-agent/infra/config-window"
+#     description = "configuration file for cloudwatch agent"
+#     type = "String"
+#     value = var.window_cw_agent_config
+#     tags = var.common_tags
+# }
 
-module "ssm_Window_ConfigureCloudWatchAgent" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
-  association_name = "Window_ConfigureCloudWatchAgent"
-  name = "AmazonCloudWatch-ManageAgent"
-  parameters = var.configure_window_cw_agent_parameters
-  target_key_values = var.aws_ssm_tags
-  schedule_expression = "at(2023-08-30T19:55:00)"
-  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
-  s3_key_prefix = "ConfigureCloudWatchAgent/"
-}
+# module "ssm_Window_ConfigureCloudWatchAgent" {
+#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+#   association_name = "Window_ConfigureCloudWatchAgent"
+#   name = "AmazonCloudWatch-ManageAgent"
+#   parameters = var.configure_window_cw_agent_parameters
+#   target_key_values = var.aws_ssm_tags
+#   schedule_expression = "at(2023-08-30T19:55:00)"
+#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name
+#   s3_key_prefix = "ConfigureCloudWatchAgent/"
+# }
 
-module "ssm_CloudWatchAgentStatus" {
-  source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
-  association_name = "CloudWatchAgentStatus"
-  name = "AmazonCloudWatch-ManageAgent"
-  parameters = var.status_cw_agent_parameters
-  target_key_values = var.aws_ssm_instanceIds
-  #schedule_expression = "cron(35 13 ? * THU *)"
-  schedule_expression = "at(2023-08-30T20:00:00)"
-  s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name 
-  s3_key_prefix = "CloudWatchAgentStatus/"
-}
+# module "ssm_CloudWatchAgentStatus" {
+#   source = "../../terraform-modules/aws/platform-services/aws_ssm/aws_ssm_association"
+#   association_name = "CloudWatchAgentStatus"
+#   name = "AmazonCloudWatch-ManageAgent"
+#   parameters = var.status_cw_agent_parameters
+#   target_key_values = var.aws_ssm_instanceIds
+#   #schedule_expression = "cron(35 13 ? * THU *)"
+#   schedule_expression = "at(2023-08-30T20:00:00)"
+#   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name 
+#   s3_key_prefix = "CloudWatchAgentStatus/"
+# }
 
 ###AWS_Maintenance_Window###
 
@@ -247,6 +234,25 @@ module "ssm_CloudWatchAgentStatus" {
 #   service_role_arn = module.ssm_ec2.iam_role_arn
 #   #parameter = local.MaintenanceWindow
 #   #notification_arn = "arn:aws:sns:us-west-2:123456789012:my-topic"
+# }
+
+###IAM_USER###
+
+module "IAM_UserProgrammaticAccess." {
+  source = "../../terraform-modules/aws/iam/iam_user"
+}
+
+###Security Groups###
+
+# module "SecurityGroup" {
+#   source = "../../terraform-modules/aws/securitygroup"
+#   for_each = toset(data.aws_vpcs.current.ids)
+#   sg_name = var.sg_name
+#   sg_description = var.sg_description
+#   sg_ingress = var.sg_ingress
+#   sg_egress = var.sg_egress
+#   assign_vpc_id = "${each.key}"
+#   sg_tags = var.common_tags
 # }
 
 
