@@ -84,8 +84,6 @@ data "aws_iam_policy_document" "cwa_sns_topic_policy" {
     actions = ["sns:Publish"]
     resources = ["arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:${var.cloudwatchalerts_sns_topic_name}"]
   }
-
-
 }
 
 ####VPC_flow_log_policies###
