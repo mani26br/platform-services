@@ -1,24 +1,24 @@
 ###CloudWatchAlerts###
 
-module "cloudwatch_alarms" {
-  source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
-  for_each = local.CloudTrailMetrics
-  alarm_name = "${each.key}"
-  metric_name = "${each.key}"
-  namespace = var.metric_namespace
-  alarm_actions = [module.sns_cloudwatchalerts_notifications.sns_topic_arn]
-  tags = var.common_tags
-}
+# module "cloudwatch_alarms" {
+#   source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
+#   for_each = local.CloudTrailMetrics
+#   alarm_name = "${each.key}"
+#   metric_name = "${each.key}"
+#   namespace = var.metric_namespace
+#   alarm_actions = [module.sns_cloudwatchalerts_notifications.sns_topic_arn]
+#   tags = var.common_tags
+# }
 
-module "cloudwatch_log_metric_filter" {
-  source ="../../terraform-modules/aws/cloudwatch/log-metric-filter"
-  for_each = local.CloudTrailMetrics
-  log_group_name = [var.cloudtrail_loggroup_name]
-  name = "${each.key}"
-  metric_transformation_name = "${each.key}"
-  pattern = "${each.value}"
-  metric_transformation_namespace = var.metric_namespace
-}
+# module "cloudwatch_log_metric_filter" {
+#   source ="../../terraform-modules/aws/cloudwatch/log-metric-filter"
+#   for_each = local.CloudTrailMetrics
+#   log_group_name = [var.cloudtrail_loggroup_name]
+#   name = "${each.key}"
+#   metric_transformation_name = "${each.key}"
+#   pattern = "${each.value}"
+#   metric_transformation_namespace = var.metric_namespace
+# }
 
 # module "vpc_flowlogs_cloudwatch_alarms" {
 #   source ="../../terraform-modules/aws/cloudwatch/metric-alarm"
@@ -60,20 +60,20 @@ module "cloudwatch_log_metric_filter" {
 #   metric_transformation_namespace = var.metric_namespace
 # }
 
-module "sns_cloudwatchalerts_notifications" {
-  source = "../../terraform-modules/aws/sns/sns_topics"
-  sns_topic_name = var.cloudwatchalerts_sns_topic_name
-  sns_topic_display_name = var.cloudwatchalerts_sns_topic_name
-  sns_topic_tags = var.common_tags
-  sns_topic_policy = data.aws_iam_policy_document.cwa_sns_topic_policy.json
-}
+# module "sns_cloudwatchalerts_notifications" {
+#   source = "../../terraform-modules/aws/sns/sns_topics"
+#   sns_topic_name = var.cloudwatchalerts_sns_topic_name
+#   sns_topic_display_name = var.cloudwatchalerts_sns_topic_name
+#   sns_topic_tags = var.common_tags
+#   sns_topic_policy = data.aws_iam_policy_document.cwa_sns_topic_policy.json
+# }
 
-module "cwa_email_sns_topic_subscription"{
-  source = "../../terraform-modules/aws/sns/sns_topic_subscription"
-  sns_topic_subscription_topic_arn = module.sns_cloudwatchalerts_notifications.sns_topic_arn
-  sns_topic_subscription_protocol = "email"
-  sns_topic_subscription_endpoint = "hyunmin.choi@axleinfo.com"
-}
+# module "cwa_email_sns_topic_subscription"{
+#   source = "../../terraform-modules/aws/sns/sns_topic_subscription"
+#   sns_topic_subscription_topic_arn = module.sns_cloudwatchalerts_notifications.sns_topic_arn
+#   sns_topic_subscription_protocol = "email"
+#   sns_topic_subscription_endpoint = "hyunmin.choi@axleinfo.com"
+# }
 
 # module "sqs_cloudwatchalerts" {
 #   source = "../../terraform-modules/aws/sqs"
@@ -258,15 +258,15 @@ module "cwa_email_sns_topic_subscription"{
 
 ###Security Groups###
 
-# module "SecurityGroup" {
-#   source = "../../terraform-modules/aws/securitygroup"
-#   for_each = toset(data.aws_vpcs.current.ids)
-#   sg_name = var.sg_name
-#   sg_description = var.sg_description
-#   sg_ingress = var.sg_ingress
-#   sg_egress = var.sg_egress
-#   assign_vpc_id = "${each.key}"
-#   sg_tags = var.common_tags
-# }
+module "SecurityGroup" {
+  source = "../../terraform-modules/aws/securitygroup"
+  for_each = toset(data.aws_vpcs.current.ids)
+  sg_name = var.sg_name
+  sg_description = var.sg_description
+  sg_ingress = var.sg_ingress
+  sg_egress = var.sg_egress
+  assign_vpc_id = "${each.key}"
+  sg_tags = var.common_tags
+}
 
 
