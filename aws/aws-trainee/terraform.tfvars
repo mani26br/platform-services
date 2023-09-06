@@ -136,29 +136,45 @@ aws_ssm_bucket_name = "aws-trainee-ssm-s3-bucket"
 aws_ssm_sgc_bucket_name = "aws-trainee-snow-sgc-data"
 
 ###Security Groups###
-sg_name = "allow-nih-http-sg"
-sg_description = "Security groups for ABAC within NIH CIDR block"
-sg_ingress = {
-      SG = {
-      from_port = 80
-      to_port = 80
-      protocol = "tcp"
-      cidr_blocks = ["15.0.0.0/24", "10.0.0.0/24"]
-    }
+sg_ingress_http = {
+  SG = {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["156.40.252.0/25", "156.40.252.128/26", "156.40.252.192/27", "156.40.252.240/32", "156.40.252.224/28"]
+    description = "NIH wireless"
+  }
 
-    SG2 = {
-      from_port = 443
-      to_port = 443
-      protocol = "tcp"
-      cidr_blocks = ["15.0.0.0/24"]
-    }
+  SG2 = {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["128.231.234.0/27"]
+    description = "NIH VPN"
+  }
+  
+  SG3 = {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["128.231.234.32/32"]
+    description = "NCATS Sci VPN"
+  }
+
+  SG4 = {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["128.231.234.64/27"]
+    description = "NCATS VPN"
+  }
 }
 
 sg_egress = {
-    SG = {
-      from_port = 0
-      to_port = 0
-      protocol = "-1"
-      cidr_blocks = ["15.0.0.0/24"]
-    }
+  SG = {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["15.0.0.0/24"]
   }
+}

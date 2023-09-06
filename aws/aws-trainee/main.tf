@@ -258,15 +258,15 @@ module "aws_ssm_sgc_s3_bucket" {
 
 ###Security Groups###
 
-# module "SecurityGroup" {
-#   source = "../../terraform-modules/aws/securitygroup"
-#   for_each = toset(data.aws_vpcs.current.ids)
-#   sg_name = var.sg_name
-#   sg_description = var.sg_description
-#   sg_ingress = var.sg_ingress
-#   sg_egress = var.sg_egress
-#   assign_vpc_id = "${each.key}"
-#   sg_tags = var.common_tags
-# }
+module "SecurityGroup" {
+  source = "../../terraform-modules/aws/securitygroup"
+  for_each = toset(data.aws_vpcs.current.ids)
+  sg_name = "allow-nih-http-sg"
+  sg_description = "Security groups for ABAC within NIH CIDR block for http access"
+  sg_ingress = var.sg_ingress_http
+  sg_egress = var.sg_egress
+  assign_vpc_id = "${each.key}"
+  sg_tags = var.common_tags
+}
 
 

@@ -135,15 +135,7 @@ locals {
 
 ##Security_Group###
 
-variable "sg_name" {
-  type = string
-}
-
-variable "sg_description" {
-  type = string
-}
-
-variable "sg_ingress" {
+variable "sg_ingress_http" {
   type = any
 }
 
