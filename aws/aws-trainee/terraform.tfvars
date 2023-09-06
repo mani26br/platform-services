@@ -136,7 +136,7 @@ aws_ssm_bucket_name = "aws-trainee-ssm-s3-bucket"
 aws_ssm_sgc_bucket_name = "aws-trainee-snow-sgc-data"
 
 ###Security Groups###
-sg_name = "NIH-SG"
+sg_name = "allow-nih-http-sg"
 sg_description = "Security groups for ABAC within NIH CIDR block"
 sg_ingress = {
       SG = {
