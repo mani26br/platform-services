@@ -139,6 +139,10 @@ variable "sg_ingress_http" {
   type = any
 }
 
+variable "sg_ingress_https" {
+  type = any
+}
+
 variable "sg_egress" {
   type = any
 }
