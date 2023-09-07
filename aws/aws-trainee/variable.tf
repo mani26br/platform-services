@@ -147,3 +147,8 @@ variable "sg_egress" {
   type = any
 }
 
+###Launch_Template###
+
+variable "launch_template_vpc_security_group_ids" {
+  type = list(string)
+}

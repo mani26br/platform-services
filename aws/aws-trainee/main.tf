@@ -123,13 +123,13 @@
 #   iam_policy_policy   = data.aws_iam_policy_document.aws_ssm_ec2_policy.json
 # }
 
-module "aws_ssm_sgc_s3_bucket" {
-  source = "../../terraform-modules/aws/platform-services/s3_bucket"
-  bucket = var.aws_ssm_sgc_bucket_name
-  policy = data.aws_iam_policy_document.aws_ssm_sgc_s3_policy.json
-  region = var.AWS_REGION
-  bucket_tags = var.common_tags
-}
+# module "aws_ssm_sgc_s3_bucket" {
+#   source = "../../terraform-modules/aws/platform-services/s3_bucket"
+#   bucket = var.aws_ssm_sgc_bucket_name
+#   policy = data.aws_iam_policy_document.aws_ssm_sgc_s3_policy.json
+#   region = var.AWS_REGION
+#   bucket_tags = var.common_tags
+# }
 
 # module "aws_ssm_s3_bucket" {
 #   source = "../../terraform-modules/aws/platform-services/s3_bucket"
@@ -280,4 +280,19 @@ module "security_group_https" {
   sg_tags = var.common_tags
 }
 
+###Launch_Template###
 
+module "launch_template" {
+  source = "../../terraform-modules/aws/launch_template"
+  launch_template_name = "New-EC2"
+  launch_instance_type = "t2.micro"
+  launch_template_description = "launch template for new ec2"
+  launch_template_image_id = "ami-01a07412dc3259433"
+  launch_template_vpc_security_group_ids = var.launch_template_vpc_security_group_ids
+  launch_template_block_device_name = "/dev/sdf"
+  launch_template_volume_size = "20"
+  launch_template_volume_type = "gp2"
+  launch_template_user_data = ""
+  launch_template_ssh_key = "ec2"
+  launch_template_instance_name = "test"
+}

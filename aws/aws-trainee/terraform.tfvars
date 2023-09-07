@@ -212,3 +212,7 @@ sg_egress = {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+###Launch_Template###
+
+launch_template_vpc_security_group_ids = ["sg-09715acd2b4c22c47"]
