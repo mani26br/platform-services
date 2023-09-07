@@ -148,7 +148,14 @@ variable "sg_egress" {
 }
 
 ###Launch_Template###
+variable "launch_template_image_id" {
+  type = string
+}
 
 variable "launch_template_vpc_security_group_ids" {
   type = list(string)
+}
+
+variable "launch_template_ssh_key" {
+  type = string
 }

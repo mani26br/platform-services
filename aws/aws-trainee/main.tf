@@ -111,9 +111,9 @@
 
 ###AWS_Systems_Manager###
 
-# module "ssm_ec2" {
-#   source = "../../terraform-modules/aws/ec2/iam_policy_cloudwatch"
-# }
+module "ssm_ec2" {
+  source = "../../terraform-modules/aws/ec2/iam_policy_cloudwatch"
+}
 
 # module "ec2_iam_policy" {
 #   source = "../../terraform-modules/aws/iam/iam_policy"
@@ -258,41 +258,41 @@
 
 ###Security Groups###
 
-module "security_group_http" {
-  source = "../../terraform-modules/aws/securitygroup"
-  for_each = toset(data.aws_vpcs.current.ids)
-  sg_name = "allow-nih-http-sg"
-  sg_description = "Security groups for ABAC within NIH CIDR block for http access"
-  sg_ingress = var.sg_ingress_http
-  sg_egress = var.sg_egress
-  assign_vpc_id = "${each.key}"
-  sg_tags = var.common_tags
-}
+# module "security_group_http" {
+#   source = "../../terraform-modules/aws/securitygroup"
+#   for_each = toset(data.aws_vpcs.current.ids)
+#   sg_name = "allow-nih-http-sg"
+#   sg_description = "Security groups for ABAC within NIH CIDR block for http access"
+#   sg_ingress = var.sg_ingress_http
+#   sg_egress = var.sg_egress
+#   assign_vpc_id = "${each.key}"
+#   sg_tags = var.common_tags
+# }
 
-module "security_group_https" {
-  source = "../../terraform-modules/aws/securitygroup"
-  for_each = toset(data.aws_vpcs.current.ids)
-  sg_name = "allow-nih-https-sg"
-  sg_description = "Security groups for ABAC within NIH CIDR block for https access"
-  sg_ingress = var.sg_ingress_https
-  sg_egress = var.sg_egress
-  assign_vpc_id = "${each.key}"
-  sg_tags = var.common_tags
-}
+# module "security_group_https" {
+#   source = "../../terraform-modules/aws/securitygroup"
+#   for_each = toset(data.aws_vpcs.current.ids)
+#   sg_name = "allow-nih-https-sg"
+#   sg_description = "Security groups for ABAC within NIH CIDR block for https access"
+#   sg_ingress = var.sg_ingress_https
+#   sg_egress = var.sg_egress
+#   assign_vpc_id = "${each.key}"
+#   sg_tags = var.common_tags
+# }
 
 ###Launch_Template###
 
-module "launch_template" {
-  source = "../../terraform-modules/aws/launch_template"
-  launch_template_name = "New-EC2"
-  launch_instance_type = "t2.micro"
-  launch_template_description = "launch template for new ec2"
-  launch_template_image_id = "ami-01a07412dc3259433"
-  launch_template_vpc_security_group_ids = var.launch_template_vpc_security_group_ids
-  launch_template_block_device_name = "/dev/sdf"
-  launch_template_volume_size = "20"
-  launch_template_volume_type = "gp2"
-  launch_template_user_data = ""
-  launch_template_ssh_key = "ec2"
-  launch_template_instance_name = "test"
-}
+# module "launch_template" {
+#   source = "../../terraform-modules/aws/launch_template"
+#   launch_template_name = "New-EC2"
+#   launch_instance_type = "t2.micro"
+#   launch_template_description = "launch template for new ec2"
+#   launch_template_image_id = var.launch_template_image_id
+#   launch_template_vpc_security_group_ids = var.launch_template_vpc_security_group_ids
+#   launch_template_block_device_name = "/dev/sdf"
+#   launch_template_volume_size = "20"
+#   launch_template_volume_type = "gp2"
+#   launch_template_user_data = ""
+#   launch_template_ssh_key = var.launch_template_ssh_key
+#   launch_template_instance_name = "test"
+# }
