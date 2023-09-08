@@ -111,9 +111,9 @@
 
 ###AWS_Systems_Manager###
 
-module "ssm_ec2" {
-  source = "../../terraform-modules/aws/ec2/iam_policy_cloudwatch"
-}
+# module "ssm_ec2" {
+#   source = "../../terraform-modules/aws/ec2/iam_policy_cloudwatch"
+# }
 
 # module "ec2_iam_policy" {
 #   source = "../../terraform-modules/aws/iam/iam_policy"
@@ -296,3 +296,23 @@ module "ssm_ec2" {
 #   launch_template_ssh_key = var.launch_template_ssh_key
 #   launch_template_instance_name = "test"
 # }
+
+###S3_Bucket###
+
+module "destination_kms_key" {
+  source = "../../terraform-modules/aws/platform-services/kms_key"
+  description = "KMS key for server side encryption on the destination bucket"
+  alias_name = "destination"
+  deletion_window_in_days = 7
+  iam_policy = data.aws_iam_policy_document.destination_kms_policy.json
+}
+
+module "destination_s3_bucket" {
+  source = "../../terraform-modules/aws/platform-services/s3_bucket"
+  bucket = "aws-ci-tfstate-s3-backup"
+  policy = data.aws_iam_policy_document.destination_s3_policy.json
+  region = var.AWS_REGION
+  bucket_tags = var.common_tags
+  kms_master_key_id = module.destination_kms_key.key_arn
+}
+

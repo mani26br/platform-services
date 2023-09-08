@@ -159,3 +159,15 @@ variable "launch_template_vpc_security_group_ids" {
 variable "launch_template_ssh_key" {
   type = string
 }
+
+
+###
+variable "splunk_connection_role_name" {
+  type    = string
+  default = ""
+}
+
+variable "source_account" {
+  type = string
+  default = ""
+}

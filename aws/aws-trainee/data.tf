@@ -151,7 +151,7 @@ data "aws_iam_policy_document" "aws_ssm_sgc_s3_policy" {
     }
     principals {
       type        = "AWS"
-      identifiers = ["${data.aws_caller_identity.current.arn}"]
+      identifiers = ["${data.aws_caller_identity.current.account_id}"]
     }
 
     actions = [
@@ -240,4 +240,84 @@ data "aws_iam_policy_document" "sg_abac_policy" {
       ]
     }
   }
+}
+
+###Destination_S3_policy###
+
+data "aws_iam_policy_document" "destination_s3_policy" {
+  version = "2008-10-17"
+  statement {
+    sid = "AllowReplication"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${var.source_account}:root"]
+    }
+
+    actions = [
+        "s3:GetBucketVersioning",
+        "s3:PutBucketVersioning",
+        "s3:ReplicateObject",
+        "s3:ReplicateDelete",
+        "s3:ObjectOwnerOverrideToBucketOwner",
+    ]
+ 
+    resources = ["arn:aws:s3:::aws-ci-tfstate-s3-backup", 
+                "arn:aws:s3:::aws-ci-tfstate-s3-backup/*"] 
+}
+
+statement {
+    sid = "AllowRead"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${var.source_account}:role/${var.splunk_connection_role_name}", "arn:aws:iam::${var.source_account}:root"]
+    }
+
+    actions = [
+        "s3:List*",
+        "s3:Get*"
+    ]
+ 
+    resources = ["arn:aws:s3:::aws-ci-tfstate-s3-backup", 
+                "arn:aws:s3:::aws-ci-tfstate-s3-backup/*"]
+}
+}
+
+###Destination_KMS_policy###
+data "aws_iam_policy_document" "destination_kms_policy" {
+  version = "2012-10-17"
+  statement {
+    sid = "Enable IAM User Permissions"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.splunk_connection_role_name}", "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+
+    actions = [
+        "kms:*",
+    ]
+ 
+    resources = ["*"]
+}
+
+  statement {
+    sid = "Enable cross account encrypt access for S3 Cross Region Replication"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["${var.source_account}"]
+    }
+
+    actions = [
+        "kms:Encrypt",
+    ]
+ 
+    resources = ["*"]
+}
 }

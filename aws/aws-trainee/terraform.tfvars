@@ -217,3 +217,6 @@ sg_egress = {
 launch_template_image_id = "ami-01a07412dc3259433"
 launch_template_vpc_security_group_ids = ["sg-09715acd2b4c22c47"]
 launch_template_ssh_key = "ec2"
+
+splunk_connection_role_name = "splunk-role-access"
+source_account =  "853931821519"
