@@ -128,6 +128,7 @@
 #   bucket = var.aws_ssm_sgc_bucket_name
 #   policy = data.aws_iam_policy_document.aws_ssm_sgc_s3_policy.json
 #   region = var.AWS_REGION
+#   sse_algorithm = "AES256"
 #   bucket_tags = var.common_tags
 # }
 
@@ -136,6 +137,7 @@
 #   bucket = var.aws_ssm_bucket_name
 #   policy = data.aws_iam_policy_document.aws_ssm_s3_policy.json
 #   region = var.AWS_REGION
+#   sse_algorithm = "AES256"
 #   bucket_tags = var.common_tags
 # }
 
@@ -321,5 +323,6 @@ module "destination_s3_bucket" {
   region = var.AWS_REGION
   bucket_tags = var.common_tags
   #kms_master_key_id = module.destination_kms_key.key_arn
+  sse_algorithm = "aws:kms"
 }
 
