@@ -216,15 +216,33 @@ data "aws_iam_policy_document" "aws_ssm_ec2_policy" {
 data "aws_iam_policy_document" "sg_abac_policy" {
   version = "2012-10-17"
   statement {
-    sid = ""
+    sid = "ReadSG"
     effect = "Allow"
 
     actions = [
       "ec2:DescribeSecurityGroupRules",
-			"ec2:DescribeSecurityGroups"
+			"ec2:DescribeSecurityGroups",
+      "ec2:DescribeTags"
     ]
  
     resources = ["*"]
+  }
+  statement {
+    sid = "AbacSG"
+    effect = "Allow"
+
+    actions = [
+      "ec2:AuthorizeSecurityGroupIngress", 
+      "ec2:RevokeSecurityGroupIngress", 
+      "ec2:AuthorizeSecurityGroupEgress", 
+      "ec2:RevokeSecurityGroupEgress", 
+      "ec2:ModifySecurityGroupRules",
+      "ec2:UpdateSecurityGroupRuleDescriptionsIngress", 
+      "ec2:UpdateSecurityGroupRuleDescriptionsEgress"
+    ]
+
+    resources = ["arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:security-group/*"]
+
     condition {
       test = "StringEquals"
       variable = "aws:PrincipalTag/Access-team"
@@ -234,12 +252,13 @@ data "aws_iam_policy_document" "sg_abac_policy" {
     }
     condition {
       test = "StringEquals"
-      variable = "ec2:ResourceTag/environment"
+      variable = "aws:ResourceTag/project"
 
-      values = [var.common_tags["environment"]
+      values = [var.common_tags["project"]
       ]
     }
   }
+  
 }
 
 ###Destination_S3_policy###

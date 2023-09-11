@@ -258,27 +258,34 @@
 
 ###Security Groups###
 
-# module "security_group_http" {
-#   source = "../../terraform-modules/aws/securitygroup"
-#   for_each = toset(data.aws_vpcs.current.ids)
-#   sg_name = "allow-nih-http-sg"
-#   sg_description = "Security groups for ABAC within NIH CIDR block for http access"
-#   sg_ingress = var.sg_ingress_http
-#   sg_egress = var.sg_egress
-#   assign_vpc_id = "${each.key}"
-#   sg_tags = var.common_tags
-# }
+module "security_group_http" {
+  source = "../../terraform-modules/aws/securitygroup"
+  for_each = toset(data.aws_vpcs.current.ids)
+  sg_name = "allow-nih-http-sg"
+  sg_description = "Security groups for ABAC within NIH CIDR block for http access"
+  sg_ingress = var.sg_ingress_http
+  sg_egress = var.sg_egress
+  assign_vpc_id = "${each.key}"
+  sg_tags = var.common_tags
+}
 
-# module "security_group_https" {
-#   source = "../../terraform-modules/aws/securitygroup"
-#   for_each = toset(data.aws_vpcs.current.ids)
-#   sg_name = "allow-nih-https-sg"
-#   sg_description = "Security groups for ABAC within NIH CIDR block for https access"
-#   sg_ingress = var.sg_ingress_https
-#   sg_egress = var.sg_egress
-#   assign_vpc_id = "${each.key}"
-#   sg_tags = var.common_tags
-# }
+module "security_group_https" {
+  source = "../../terraform-modules/aws/securitygroup"
+  for_each = toset(data.aws_vpcs.current.ids)
+  sg_name = "allow-nih-https-sg"
+  sg_description = "Security groups for ABAC within NIH CIDR block for https access"
+  sg_ingress = var.sg_ingress_https
+  sg_egress = var.sg_egress
+  assign_vpc_id = "${each.key}"
+  sg_tags = var.common_tags
+}
+
+module "IAM_abac_sg_user" {
+  source = "../../terraform-modules/aws/iam/iam_user"
+  iam_user_name = "abac_sg_user"
+  policy = data.aws_iam_policy_document.sg_abac_policy.json
+  iam_user_tags = var.common_tags
+}
 
 ###Launch_Template###
 
@@ -299,20 +306,20 @@
 
 ###S3_Bucket###
 
-module "destination_kms_key" {
-  source = "../../terraform-modules/aws/platform-services/kms_key"
-  description = "KMS key for server side encryption on the destination bucket"
-  alias_name = "destination"
-  deletion_window_in_days = 7
-  iam_policy = data.aws_iam_policy_document.destination_kms_policy.json
-}
+# module "destination_kms_key" {
+#   source = "../../terraform-modules/aws/platform-services/kms_key"
+#   description = "KMS key for server side encryption on the destination bucket"
+#   alias_name = "destination"
+#   deletion_window_in_days = 7
+#   iam_policy = data.aws_iam_policy_document.destination_kms_policy.json
+# }
 
-module "destination_s3_bucket" {
-  source = "../../terraform-modules/aws/platform-services/s3_bucket"
-  bucket = "aws-ci-tfstate-s3-backup"
-  policy = data.aws_iam_policy_document.destination_s3_policy.json
-  region = var.AWS_REGION
-  bucket_tags = var.common_tags
-  kms_master_key_id = module.destination_kms_key.key_arn
-}
+# module "destination_s3_bucket" {
+#   source = "../../terraform-modules/aws/platform-services/s3_bucket"
+#   bucket = "aws-ci-tfstate-s3-backup"
+#   policy = data.aws_iam_policy_document.destination_s3_policy.json
+#   region = var.AWS_REGION
+#   bucket_tags = var.common_tags
+#   kms_master_key_id = module.destination_kms_key.key_arn
+# }
 
