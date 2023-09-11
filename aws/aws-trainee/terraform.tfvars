@@ -218,5 +218,6 @@ launch_template_image_id = "ami-01a07412dc3259433"
 launch_template_vpc_security_group_ids = ["sg-09715acd2b4c22c47"]
 launch_template_ssh_key = "ec2"
 
+###S3_Replication###
 splunk_connection_role_name = "splunk-role-access"
 aws_source_account_role =  "853931821519"

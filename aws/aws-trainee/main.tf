@@ -128,7 +128,6 @@
 #   bucket = var.aws_ssm_sgc_bucket_name
 #   policy = data.aws_iam_policy_document.aws_ssm_sgc_s3_policy.json
 #   region = var.AWS_REGION
-#   sse_algorithm = "AES256"
 #   bucket_tags = var.common_tags
 # }
 
@@ -137,7 +136,6 @@
 #   bucket = var.aws_ssm_bucket_name
 #   policy = data.aws_iam_policy_document.aws_ssm_s3_policy.json
 #   region = var.AWS_REGION
-#   sse_algorithm = "AES256"
 #   bucket_tags = var.common_tags
 # }
 
@@ -148,7 +146,7 @@
 #   parameters = var.install_cw_agent_parameters
 #   target_key_values = var.aws_ssm_instanceIds
 #   #schedule_expression = "cron(35 13 ? * THU *)"
-#   schedule_expression = "at(2023-08-30T19:45:00)"
+#   schedule_expression = "at(2023-09-11T20:57:00)"
 #   s3_bucket_name = module.aws_ssm_s3_bucket.s3_bucket_name 
 #   s3_key_prefix = "InstallCloudWatchAgent/"
 # }
@@ -308,13 +306,13 @@
 
 ###S3_Bucket###
 
-# module "destination_kms_key" {
-#   source = "../../terraform-modules/aws/platform-services/kms_key"
-#   description = "KMS key for server side encryption on the destination bucket"
-#   alias_name = "destination"
-#   deletion_window_in_days = 7
-#   iam_policy = data.aws_iam_policy_document.destination_kms_policy.json
-# }
+module "destination_kms_key" {
+  source = "../../terraform-modules/aws/platform-services/kms_key"
+  description = "KMS key for server side encryption on the destination bucket"
+  alias_name = "destination"
+  deletion_window_in_days = 7
+  iam_policy = data.aws_iam_policy_document.destination_kms_policy.json
+}
 
 module "destination_s3_bucket" {
   source = "../../terraform-modules/aws/platform-services/s3_bucket"
@@ -322,7 +320,7 @@ module "destination_s3_bucket" {
   policy = data.aws_iam_policy_document.destination_s3_policy.json
   region = var.AWS_REGION
   bucket_tags = var.common_tags
-  #kms_master_key_id = module.destination_kms_key.key_arn
+  kms_master_key_id = module.destination_kms_key.key_arn
   sse_algorithm = "aws:kms"
 }
 
