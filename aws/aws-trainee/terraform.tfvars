@@ -219,4 +219,4 @@ launch_template_vpc_security_group_ids = ["sg-09715acd2b4c22c47"]
 launch_template_ssh_key = "ec2"
 
 splunk_connection_role_name = "splunk-role-access"
-source_account =  "853931821519"
+aws_source_account_role =  "853931821519"

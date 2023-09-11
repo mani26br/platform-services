@@ -264,44 +264,40 @@ data "aws_iam_policy_document" "sg_abac_policy" {
 ###Destination_S3_policy###
 
 data "aws_iam_policy_document" "destination_s3_policy" {
-  version = "2008-10-17"
+  version = "2012-10-17"
   statement {
-    sid = "AllowReplication"
+    sid = "Set-permissions-for-objects"
     effect = "Allow"
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.source_account}:root"]
+      identifiers = ["${var.aws_source_account_role}"]
     }
 
     actions = [
-        "s3:GetBucketVersioning",
-        "s3:PutBucketVersioning",
-        "s3:ReplicateObject",
-        "s3:ReplicateDelete",
-        "s3:ObjectOwnerOverrideToBucketOwner",
+      "s3:ReplicateObject",
+      "s3:ReplicateDelete"
     ]
  
-    resources = ["arn:aws:s3:::aws-ci-tfstate-s3-backup", 
-                "arn:aws:s3:::aws-ci-tfstate-s3-backup/*"] 
+    resources = ["${module.destination_s3_bucket.s3_bucket_arn}/*"] 
 }
 
 statement {
-    sid = "AllowRead"
+    sid = "Set permissions on bucket"
     effect = "Allow"
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.source_account}:role/${var.splunk_connection_role_name}", "arn:aws:iam::${var.source_account}:root"]
+      identifiers = ["${var.aws_source_account_role}"]
     }
 
     actions = [
-        "s3:List*",
-        "s3:Get*"
+      "s3:List*",
+      "s3:GetBucketVersioning",
+      "s3:PutBucketVersioning"
     ]
  
-    resources = ["arn:aws:s3:::aws-ci-tfstate-s3-backup", 
-                "arn:aws:s3:::aws-ci-tfstate-s3-backup/*"]
+    resources = ["${module.destination_s3_bucket.s3_bucket_arn}"]
 }
 }
 
@@ -330,7 +326,7 @@ data "aws_iam_policy_document" "destination_kms_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${var.source_account}"]
+      identifiers = ["${var.aws_source_account_role}"]
     }
 
     actions = [
