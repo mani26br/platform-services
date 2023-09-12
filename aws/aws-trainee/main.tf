@@ -306,21 +306,11 @@
 
 ###S3_Bucket###
 
-module "destination_kms_key" {
-  source = "../../terraform-modules/aws/platform-services/kms_key"
-  description = "KMS key for server side encryption on the destination bucket"
-  alias_name = "destination"
-  deletion_window_in_days = 7
-  iam_policy = data.aws_iam_policy_document.destination_kms_policy.json
-}
-
 module "destination_s3_bucket" {
   source = "../../terraform-modules/aws/platform-services/s3_bucket"
   bucket = "aws-trainee-tfstate-s3-backup-test"
   policy = data.aws_iam_policy_document.destination_s3_policy.json
   region = var.AWS_REGION
   bucket_tags = var.common_tags
-  kms_master_key_id = module.destination_kms_key.key_arn
-  sse_algorithm = "aws:kms"
 }
 

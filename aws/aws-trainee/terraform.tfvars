@@ -220,4 +220,4 @@ launch_template_ssh_key = "ec2"
 
 ###S3_Replication###
 splunk_connection_role_name = "splunk-role-access"
-aws_source_account_role =  "853931821519"
+aws_source_account_number =  "063208468694"

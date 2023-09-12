@@ -167,7 +167,7 @@ variable "splunk_connection_role_name" {
   default = ""
 }
 
-variable "aws_source_account_role" {
+variable "aws_source_account_number" {
   type = string
   default = ""
 }

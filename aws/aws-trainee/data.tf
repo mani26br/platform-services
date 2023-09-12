@@ -271,7 +271,7 @@ data "aws_iam_policy_document" "destination_s3_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${var.aws_source_account_role}"]
+      identifiers = ["arn:aws:iam::${var.aws_source_account_number}:role/s3_replication_role"]
     }
 
     actions = [
@@ -288,7 +288,7 @@ statement {
 
     principals {
       type        = "AWS"
-      identifiers = ["${var.aws_source_account_role}"]
+      identifiers = ["arn:aws:iam::${var.aws_source_account_number}:role/s3_replication_role"]
     }
 
     actions = [
